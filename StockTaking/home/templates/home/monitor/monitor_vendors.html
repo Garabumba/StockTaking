@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Производители мониторов</h1>
+
+<div class="container mt-5">
+    <h1>Список производителей мониторов</h1>
+
+    <!-- Форма для выбора производителя и модели -->
+    <form>
+        <div class="mb-3">
+            <label for="manufacturer" class="form-label">Выберите производителя:</label>
+            <select class="form-select" id="manufacturer" name="manufacturer">
+                <option value="">Все производители</option>
+                <option value="asus">ASUS</option>
+                <option value="msi">MSI</option>
+                <!-- Добавьте другие производители по мере необходимости -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="model" class="form-label">Выберите модель:</label>
+            <select class="form-select" id="model" name="model">
+                <option value="">Все модели</option>
+                <!-- Здесь вы можете добавить модели для каждого производителя -->
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Применить фильтр</button>
+        <a href="/monitor_vendors/add_monitor_vendor/" type="submit" class="btn btn-success">Создать</a>
+    </form>
+
+    <!-- Карточки материнских плат -->
+    <div class="row mt-4">
+        <!-- Пример карточки -->
+        {% for monitor_vendor in monitor_vendors %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ monitor_vendor.monitor_vendor_name }}</h5>
+                    <!-- Добавьте другие характеристики материнской платы -->
+                    <a href="/monitor_vendors/{{ monitor_vendor.id }}/edit_monitor_vendor/" class="btn btn-primary">Редактировать</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Продолжайте добавлять карточки по мере необходимости -->
+    </div>
+</div>
+
+
+    <!-- <div class="card">
+        <p><b>Материнская плата:</b> {{ motherboard.motherboard_name }}</p>
+        <p><b>Модель:</b> {{ motherboard.motherboardModel }}</p>
+        <p><b>Производитель:</b> {{ motherboard.motherboardModel.motherboardVendor }}</p>
+        <button class="btn btn-primary">Редактировать</button>
+    </div> -->
+
+
+{% endblock %}

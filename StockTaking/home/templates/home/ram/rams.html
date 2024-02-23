@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Оперативная память</h1>
+
+<div class="container mt-5">
+    <h1>Список оперативной памяти</h1>
+
+    <!-- Форма для выбора производителя и модели -->
+    <form>
+        <div class="mb-3">
+            <label for="manufacturer" class="form-label">Выберите производителя:</label>
+            <select class="form-select" id="manufacturer" name="manufacturer">
+                <option value="">Все производители</option>
+                <option value="asus">ASUS</option>
+                <option value="msi">MSI</option>
+                <!-- Добавьте другие производители по мере необходимости -->
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="model" class="form-label">Выберите модель:</label>
+            <select class="form-select" id="model" name="model">
+                <option value="">Все модели</option>
+                <!-- Здесь вы можете добавить модели для каждого производителя -->
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Применить фильтр</button>
+        <a href="/rams/add_ram/" type="submit" class="btn btn-success">Создать</a>
+    </form>
+
+    <!-- Карточки материнских плат -->
+    <div class="row mt-4">
+        <!-- Пример карточки -->
+        {% for ram in rams %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ ram.ram_name }}</h5>
+                    <p class="card-text"><b>Память:</b> {{ ram.ram_memory }} МБ</p>
+                    <p class="card-text"><b>Частота:</b> {{ ram.ram_frequency }} МГц</p>
+                    <p class="card-text"><b>Модель:</b> {{ ram.ramModel }}</p>
+                    <p class="card-text"><b>Производитель:</b> {{ ram.ramModel.ramVendor }}</p>
+                    <!-- Добавьте другие характеристики материнской платы -->
+                    <a href="/rams/{{ ram.id }}/edit_ram/" class="btn btn-primary">Редактировать</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Продолжайте добавлять карточки по мере необходимости -->
+    </div>
+</div>
+
+
+    <!-- <div class="card">
+        <p><b>Материнская плата:</b> {{ motherboard.motherboard_name }}</p>
+        <p><b>Модель:</b> {{ motherboard.motherboardModel }}</p>
+        <p><b>Производитель:</b> {{ motherboard.motherboardModel.motherboardVendor }}</p>
+        <button class="btn btn-primary">Редактировать</button>
+    </div> -->
+
+
+{% endblock %}

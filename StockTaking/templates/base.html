@@ -1,0 +1,131 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link type="text/css" href="{% static 'StockTaking/lib/css/bootstrap.min.css' %}" rel="stylesheet" />
+	<link type="text/css" href="{% static 'StockTaking/css/site.css' %}" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<script src="{% static 'StockTaking/lib/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'StockTaking/lib/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+		  <a class="navbar-brand" href="#">Navbar</a>
+		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+			  <li class="nav-item">
+				<a class="nav-link active" aria-current="page" href="/">Home</a>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Материнские платы
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/motherboards/">Материнские платы</a></li>
+				  <li><a class="dropdown-item" href="/motherboard_models/">Модели материнских плат</a></li>
+				  <li><a class="dropdown-item" href="/motherboard_vendors/">Производители материнских плат</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Процессоры
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/cpus/">Процессоры</a></li>
+				  <li><a class="dropdown-item" href="/cpu_models/">Модели процессоров</a></li>
+				  <li><a class="dropdown-item" href="/cpu_vendors/">Производители процессоров</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Накопители памяти
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/storages/">Накопители памяти</a></li>
+				  <li><a class="dropdown-item" href="/storage_models/">Модели накопителей памяти</a></li>
+				  <li><a class="dropdown-item" href="/storage_vendors/">Производители накопителей памяти</a></li>
+				  <li><a class="dropdown-item" href="/storage_types/">Типы накопителей памяти</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Оперативная память
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/rams/">Оперативная память</a></li>
+				  <li><a class="dropdown-item" href="/ram_models/">Модели оперативной памяти</a></li>
+				  <li><a class="dropdown-item" href="/ram_vendors/">Производители оперативной памяти</a></li>
+				  <li><a class="dropdown-item" href="/ram_types/">Типы оперативной памяти</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Видеокарты
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/videocards/">Видеокарты</a></li>
+				  <li><a class="dropdown-item" href="/videocard_models/">Модели видеокарт</a></li>
+				  <li><a class="dropdown-item" href="/videocard_vendors/">Производители видеокарт</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+				  Мониторы
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+				  <li><a class="dropdown-item" href="/monitors/">Мониторы</a></li>
+				  <li><a class="dropdown-item" href="/monitor_models/">Модели мониторов</a></li>
+				  <li><a class="dropdown-item" href="/monitor_vendors/">Производители мониторов</a></li>
+				</ul>
+			  </li>
+			  <li class="nav-item">
+		      	<a class="nav-link" href="/computers/">Компьютеры</a>
+		      </li>
+		      <li class="nav-item">
+		      	<a class="nav-link" href="/audiences/">Аудитории</a>
+		      </li>
+			</ul>
+		  </div>
+		</div>
+	</nav>
+	<!--<div class="cantainer-fluid">
+		<div class="row flex-nowrap"></div>
+			<div class="bg-dark col-auto col-md-2 min-vh-100">
+				<div class="bg-dark p-2">
+					<a class="d-flex text-decoration-none mt-1 align-items-center text-white">
+						<span class="fs-4 d-none d-sm-inline">SideMenu</span>
+					</a>
+					<ul class="nav nav-pills flex-column mt-2">
+						<li class="nav-item">
+							<a class="nav-link text-white">
+								<i class="fs-5 fas fa-guage"></i><span class="fs-4 d-none d-sm-inline">Dashboard</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white">
+								<i class="fs-5 fa fa-home"></i><span class="fs-4 d-none d-sm-inline">Home</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white">
+								<i class="fs-5 fa fa-table-list"></i><span class="fs-4 d-none d-sm-inline">Articles</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>-->
+	{% block content %} {% endblock %}
+</body>
+</html>

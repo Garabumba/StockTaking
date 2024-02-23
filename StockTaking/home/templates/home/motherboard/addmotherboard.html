@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<form action="" method="post" enctype="multipart/form-data" id="motherboardForm">
+    {% csrf_token %}
+    <div class="form-error">{{ form.non_field_errors }}</div>
+    {% for f in form %}
+    <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}</label>{{ f }}</p>
+    <div class="form-error">{{ f.errors }}</div>
+    {% endfor %}
+    <p><button type="submit">Отправить</button></p>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    if ($('#id_motherboardVendor').val() == "")
+    {
+        $('#id_motherboardModel').attr("disabled", true);
+        var url = "/get_models/" + 0 + "/";
+    }
+    $('#id_motherboardVendor').change(function() {
+        if ($('#id_motherboardVendor').val() == "")
+        {
+            $('#id_motherboardModel').attr("disabled", true);
+            var url = "/get_models/" + 0 + "/";
+        }
+        else
+        {
+            $('#id_motherboardModel').removeAttr("disabled");
+            var url = "/get_models/" + $(this).val() + "/";
+        }
+        $.ajax({
+            url: url,
+            success: function(data) {
+                $('#id_motherboardModel').empty();
+                
+                // Парсим JSON и добавляем опции в список
+                data.forEach(function(item) {
+                    $('#id_motherboardModel').append($('<option>', {
+                        value: item.id,
+                        text: item.motherboardModel_name
+                    }));
+                });
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

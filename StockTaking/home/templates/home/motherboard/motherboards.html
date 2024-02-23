@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Материнские платы</h1>
+
+<div class="container mt-5">
+    <h1>Список материнских плат</h1>
+
+    <!-- Форма для выбора производителя и модели -->
+    <form method="GET">
+        <div class="mb-3">
+            <label for="vendor" class="form-label">Выберите производителя:</label>
+            <select class="form-select" id="vendor" name="vendor">
+                <option value="">Все производители</option>
+                {% for vendor in vendors %}
+                    <option value="{{ vendor.id }}">{{ vendor.motherboardVendor_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <div class="mb-3">
+            <label for="model" class="form-label">Выберите модель:</label>
+            <select class="form-select" id="model" name="model">
+                <option value="">Все модели</option>
+                {% for model in models %}
+                    <option value="{{ model.id }}">{{ model.motherboardModel_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    
+        <button type="submit" class="btn btn-primary">Применить фильтр</button>
+        <a href="/motherboards/add_motherboard/" type="submit" class="btn btn-success">Создать</a>
+    </form>
+
+    <!-- Карточки материнских плат -->
+    <div class="row mt-4">
+        <!-- Пример карточки -->
+        {% for motherboard in motherboards %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ motherboard.motherboard_name }}</h5>
+                    <p class="card-text"><b>Модель:</b> {{ motherboard.motherboardModel }}</p>
+                    <p class="card-text"><b>Производитель:</b> {{ motherboard.motherboardModel.motherboardVendor }}</p>
+                    <!-- Добавьте другие характеристики материнской платы -->
+                    <a href="/motherboards/{{ motherboard.id }}/edit_motherboard/" class="btn btn-primary">Редактировать</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <!-- Продолжайте добавлять карточки по мере необходимости -->
+    </div>
+</div>
+{% endblock %}

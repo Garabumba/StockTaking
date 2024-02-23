@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Аудитория {{audience.audience_name}}</h1>
+<a class="test">test</a>
+<link type="text/css" href="{% static 'StockTaking/css/draw.css' %}" rel="stylesheet" />
+<main role="main" class="pb-3 t">
+    <!--<div id="stage-parent">
+        <div id="container"></div>
+    </div>-->
+    <div id="stage-parent">
+        <canvas id="canvas" style="border: 1px solid black;"></canvas>
+        <img src="/media/home/pc.png" id="my-image" style="display: none;">
+    </div>
+    <!--<div id="canvas-container" style="border:1px solid #ccc;"></div>-->
+    <div class="tools">
+        <div style="text-align: center; background-color: rgb(19, 182, 168); border-bottom: 1px solid black;">ТЕХНИКА</div>
+        <div class="audience toolsElement">
+            {% for comp in computers %}
+                <div style="display:block; width: 30px; height: 30px;">
+                    <div id={{comp.computer_inventory_number}} class="newComputer"></div>
+                    <p style="font-size: 8pt;">{{comp.computer_name}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="btn btn-success toolsElement" id="saveState">Сохранить</div>
+    </div>
+    <!--<div class="tools">
+        <div style="text-align: center; background-color: rgb(19, 182, 168); border-bottom: 1px solid black;">КОРПУС</div>
+        <div class="universityBody toolsElement">
+            <div id="addRect" class="newRectUniversityBody"></div>
+            <div id="addCircle" class="newCircleUniversityBody"></div>
+            {% for comp in computers %}
+                <div style="display:block; width: 30px; height: 30px;">
+                    <div id={{comp.computer_inventory_number}} class="newRectUniversityBody"></div>
+                    <p style="font-size: 8pt;">{{comp.computer_name}}</p>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="btn btn-success toolsElement" id="saveState">Сохранить</div>
+    </div>-->
+</main>
+<div class="btn btn-primary">Назад</div>
+<div class="btn btn-success">Далее</div>
+
+<!--<script src="https://unpkg.com/fabric@5.3.0/dist/fabric.min.js"></script>-->
+<script src="{% static 'StockTaking/js/fabric.js' %}"></script>
+<script src="{% static 'StockTaking/js/site.js' %}"></script>
+<!--<script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>-->
+
+    <!-- <div class="card">
+        <p><b>Материнская плата:</b> {{ motherboard.motherboard_name }}</p>
+        <p><b>Модель:</b> {{ motherboard.motherboardModel }}</p>
+        <p><b>Производитель:</b> {{ motherboard.motherboardModel.motherboardVendor }}</p>
+        <button class="btn btn-primary">Редактировать</button>
+    </div> -->
+
+
+{% endblock %}

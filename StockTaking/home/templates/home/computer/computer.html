@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <h1>Компьютер {{computer.computer_inventory_number}}</h1>
+    <div>Имя компьютера: {{computer.computer_name}}</div>
+    <div>Инвентарный номер: {{computer.computer_inventory_number}}</div>
+    <div>Разрядность: {{computer.computer_arch}}</div>
+    <div>Материнская плата: <a href="/motherboards/{{computer.motherboard.id}}/edit_motherboard/">{{computer.motherboard.motherboard_name}}</a></div>
+    <div>Процессор: <a href="/cpus/{{computer.cpu.id}}/edit_cpu/">{{computer.cpu.CPU_name}}</a></div>
+    <div>Аудитория: <a href="/audience/{{computer.audience.id}}">{{computer.audience.audience_name}}</a></div>
+    <h1>Накопители памяти</h1>
+    <h6>{{total_storage_memory}} ГБ</h6>
+    {% for storage in storages %}
+        <div><b>Накопитель памяти: </b><a href="/storages/{{storage.id}}/edit_storage/" class="text-decoration-none">{{storage.storage_name}}</a></div>
+    {% endfor %}
+    <h1>Оперативная память</h1>
+    <h6>{{ram_memory}} ГБ</h6>
+    {% for ram in rams %}
+        <div><b>Оперативная память: </b><a href="/rams/{{ram.id}}/edit_ram/" class="text-decoration-none">{{ram.ram_name}} {{ram.ram_memory}}</a></div>
+    {% endfor %}
+    <h1>Мониторы</h1>
+    {% for monitor in monitors %}
+        <div><b>Монитор: </b><a href="/monitors/{{monitor.id}}/edit_monitor/" class="text-decoration-none">{{monitor.monitor_name}}</a></div>
+    {% endfor %}
+    <div><a href="">ПО</a></div>
+
+
+{% endblock %}
