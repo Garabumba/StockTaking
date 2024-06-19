@@ -1361,8 +1361,8 @@ class AddAudienceForm(forms.ModelForm):
     
     def clean_max_computers(self):
         max_computers = self.cleaned_data['max_computers']
-        if max_computers <= 0:
-            raise ValidationError("Максимальное количество комьютеров не может быть нулём или отрицательным числом")
+        if max_computers < 0:
+            raise ValidationError("Максимальное количество комьютеров не может быть отрицательным числом")
         return max_computers
     
     def clean_max_places(self):
