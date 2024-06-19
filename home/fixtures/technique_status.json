@@ -1,0 +1,1 @@
+[{"model": "home.techniquestatus", "pk": 1, "fields": {"name": "Исправен"}}, {"model": "home.techniquestatus", "pk": 2, "fields": {"name": "Сломан"}}, {"model": "home.techniquestatus", "pk": 3, "fields": {"name": "Списан"}}]

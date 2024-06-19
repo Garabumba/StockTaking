@@ -1,0 +1,1 @@
+[{"model": "home.audiencetype", "pk": 1, "fields": {"name": "Лекционная "}}, {"model": "home.audiencetype", "pk": 2, "fields": {"name": "Компьютерный класс"}}]

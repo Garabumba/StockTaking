@@ -1,0 +1,117 @@
+html {
+    font-size: 14px;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+#stage-parent {
+    width: 100%;
+}
+
+.container {
+    margin-left: 0px;
+}
+
+.t {
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.newRect, .loadState, .saveState {
+    border: 1px solid black;
+}
+
+.newRect:hover, .loadState:hover, .saveState:hover, .newComputer:hover, .newCircleUniversityBody:hover {
+    cursor: pointer;
+}
+
+.newComputer {
+    width: 30px;
+    height: 30px;
+    /* border: 1px solid black;
+    background-color: white; */
+}
+
+.newCircleUniversityBody {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.tools {
+    border: 1px solid black;
+}
+
+.audience {
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+    justify-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    grid-row-gap: 10px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+/*canvas {
+    background: gray;
+}*/
+
+.tools .tech-header {
+    text-align: center;
+    background-color: rgb(19, 182, 168);
+    border-bottom: 1px solid black;
+}
+
+.accordion .accordion-item {
+    border: none;
+}
+
+.accordion-button {
+    background-color: #f7f7f7;
+    color: #333;
+}
+
+.accordion-body {
+    padding: 10px;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 columns layout */
+    gap: 10px; /* space between items */
+    justify-items: center;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tech-image {
+    width: 30px;
+    height: 30px;
+}
+
+.tech-label {
+    font-size: 8pt;
+    text-align: center;
+}

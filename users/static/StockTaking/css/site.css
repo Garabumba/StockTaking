@@ -1,0 +1,286 @@
+/* nav.navbar .dropdown:hover > .dropdown-menu {
+    display: block; 
+} */
+
+/* .navbar {
+    box-sizing: border-box;
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    margin-left: -300px;
+    background-color: #7952b3;
+    transition: 0.4s;
+    overflow-y: scroll;
+    z-index: 1;
+    --bs-navbar-padding-y: 0;
+}
+
+.nav-link {
+    font-size: 1.25em;
+}
+
+.nav-link:active,
+.nav-link:focus,
+.nav-link:hover {
+    background-color: #ffffff26;
+}
+
+.dropdown-menu {
+    background-color: #7952b3;
+}
+
+.dropdown-item:active,
+.dropdown-item:focus,
+.dropdown-item:hover {
+    background-color: #ffffff26;
+}
+
+.my-container {
+    transition: 0.4s;
+}
+
+.active-nav {
+    margin-left: 0;
+}
+
+.active-cont {
+    margin-left: 250px;
+}
+
+.sticky-footer {
+    position: sticky;
+    bottom: 0;
+    background-color: inherit;
+    width: 100%;
+    z-index: 2;
+    margin-bottom: 0;
+    --bs-navbar-padding-y: 0;
+}
+
+#menu-btn {
+    display: block;
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    left: -40px;
+    background-color: gray;
+    border-radius: 50%;
+    color: #fff;
+    transition: 0.4s;
+    text-align: center;
+    z-index: 0;
+}
+
+#menu-btn:hover {
+    cursor: pointer;
+    left: -35px;
+    transition: 0.4s;
+    z-index: 0;
+}
+
+.accordion-body:hover {
+    background-color: gray;
+}
+
+.accordion-body {
+    position: relative;
+}
+
+.accordion-body a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0; 
+    box-sizing: border-box;
+}
+*/
+::-webkit-scrollbar {
+    width: 8px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #f5f5f5; 
+}
+
+::-webkit-scrollbar-thumb {
+    background: #ccc; 
+    border-radius: 4px; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #aaa; 
+} 
+
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+.active {
+    background-color: #aaa;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding-left: 0;
+}
+
+.wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#sidebar {
+    width: 264px;
+    background: #fff;
+    /* background: var(--bs-dark); */
+    transition: all 0.35s ease-in-out;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    margin-left: 264px;
+    width: calc(100% - 264px);
+    overflow: hidden;
+    transition: margin-left 0.35s ease-in-out, width 0.35s ease-in-out;
+}
+
+nav {
+    flex-shrink: 0;
+}
+
+.navbar {
+    background-color: #fff;
+}
+
+.content {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.sidebar-logo {
+    padding: 1.15rem;
+}
+
+.sidebar-logo a {
+    /* color: #e9ecef; */
+    color: #000;
+    font-size: 1.15 rem;
+    font-weight: 600;
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.sidebar-header {
+    /* color: #e9ecef; */
+    color: #000;
+    font-size: .75rem;
+    padding: 1.5rem 1.5rem .375rem;
+}
+
+a.sidebar-link {
+    padding: .625rem 1.625rem;
+    /* color: #e9ecef; */
+    color: #000;
+    position: relative;
+    display: block;
+    font-size: 0.875rem;
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+}
+
+.sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+.sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-expand .navbar-nav {
+    margin-left: auto;
+}
+
+#sidebar.collapsed {
+    margin-left: -264px;
+}
+
+.main.collapsed {
+    margin-left: 0;
+    width: 100%;
+}
+
+.sidebar-item:hover {
+    background-color: #aaa;
+}
+
+.sidebar-item > ul > li {
+    background-color: #fff;
+}
+
+.sidebar-link > img {
+    width: 32px;
+    margin-right: 10px;
+}
+
+@media (max-width: 399px) {
+    .main {
+        margin-left: 164px;
+        width: 100%;
+    }
+
+    .sidebar-link > img {
+        width: 24px;
+    }
+
+    #sidebar {
+        max-width: 164px;
+        min-width: 164px;
+        /* background: var(--bs-dark); */
+        transition: all 0.35s ease-in-out;
+        overflow-y: scroll;
+    }
+
+    #sidebar.collapsed {
+        margin-left: -164px;
+    }
+}

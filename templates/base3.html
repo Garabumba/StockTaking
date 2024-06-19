@@ -1,0 +1,220 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link type="text/css" href="{% static 'StockTaking/lib/css/bootstrap.min.css' %}" rel="stylesheet" />
+	<link type="text/css" href="{% static 'StockTaking/css/site.css' %}" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+	<nav class="navbar navbar-expand d-flex flex-column align-item-start bg-light" id="sidebar">
+		<a class="navbar-brand text-dark mt-5">
+			<div class="display-5 font-weight-bold">TEST</div>
+		</a>
+		<ul class="navbar-nav d-flex flex-column mt-5 w-100">
+			<li class="nav-item w-100">
+				<a href="#" class="nav-link text-dark d-flex align-items-center pl-4">
+					<img src="/media/home/videocard.svg" style="width: 32px; margin-right: 10px;">
+					<span>Главная</span>
+				</a>
+			</li>
+
+			<li class="nav-item w-100">
+				<a href="/computers/" class="nav-link text-dark d-flex align-items-center pl-4">
+					<img src="/media/home/pc.svg" style="width: 32px; margin-right: 10px;">
+					<span>Компьютеры</span>
+				</a>
+			</li>
+
+	        <li class="nav-item w-100">
+	            <a href="/audiences/" class="nav-link text-dark d-flex align-items-center pl-4">
+	                <img src="/media/home/audience.svg" style="width: 32px; margin-right: 10px;">
+	                <span>Аудитории</span>
+	            </a>
+	        </li>
+
+	        <li class="nav-item w-100">
+	            <a href="/tasks/" class="nav-link text-dark d-flex align-items-center pl-4">
+	                <img src="/media/home/tasks.svg" style="width: 32px; margin-right: 10px;">
+	                <span>Задачи</span>
+	            </a>
+	        </li>
+
+	        <li class="nav-item w-100">
+	            <a href="/university_bodies/" class="nav-link text-dark d-flex align-items-center pl-4">
+	                <img src="/media/home/tasks.svg" style="width: 32px; margin-right: 10px;">
+	                <span>Корпуса</span>
+	            </a>
+	        </li>
+
+	        <li class="nav-item w-100">
+	            <a href="/analytic/" class="nav-link text-dark d-flex align-items-center pl-4">
+	                <img src="/media/home/tasks.svg" style="width: 32px; margin-right: 10px;">
+	                <span>Аналитика</span>
+	            </a>
+	        </li>
+
+	        {% if perms.home.view_motherboard %}
+			<li class="nav-item accordion accordion-flush" id="motherboardAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-motherboard">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#motherboard" aria-expanded="false" aria-controls="motherboard"><img src="/media/home/motherboard.svg" style="width: 32px; margin-right: 10px;">Материнские платы</button>
+					</h2>
+					<div id="motherboard" class="accordion-collapse collapse" aria-labelledby="flush-motherboard" data-bs-parent="#motherboardAccordion">
+						<div class="accordion-body"><a href="/motherboards/" class="text-dark text-decoration-none">Материнские платы</a></div>
+						<div class="accordion-body"><a href="/motherboard_models/" class="text-dark text-decoration-none">Модели материнских плат</a></div>
+						<div class="accordion-body"><a href="/motherboard_vendors/" class="text-dark text-decoration-none">Производители материнских плат</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="cpuAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-cpu">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cpu" aria-expanded="false" aria-controls="cpu"><img src="/media/home/cpu.svg" style="width: 32px; margin-right: 10px;">Процессоры</button>
+					</h2>
+					<div id="cpu" class="accordion-collapse collapse" aria-labelledby="flush-cpu" data-bs-parent="#cpuAccordion">
+						<div class="accordion-body"><a href="/cpus/" class="text-dark text-decoration-none">Процессоры</a></div>
+						<div class="accordion-body"><a href="/cpu_models/" class="text-dark text-decoration-none">Модели процессоров</a></div>
+						<div class="accordion-body"><a href="/cpu_vendors/" class="text-dark text-decoration-none">Производители процессоров</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="storageAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-storage">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#storage" aria-expanded="false" aria-controls="storage"><img src="/media/home/storage.svg" style="width: 32px; margin-right: 10px;">Накопители памяти</button>
+					</h2>
+					<div id="storage" class="accordion-collapse collapse" aria-labelledby="flush-storage" data-bs-parent="#storageAccordion">
+						<div class="accordion-body"><a href="/storages/" class="text-dark text-decoration-none">Накопители памяти</a></div>
+						<div class="accordion-body"><a href="/storage_models/" class="text-dark text-decoration-none">Модели накопителей памяти</a></div>
+						<div class="accordion-body"><a href="/storage_vendors/" class="text-dark text-decoration-none">Производители накопителей памяти</a></div>
+						<div class="accordion-body"><a href="/storage_types/" class="text-dark text-decoration-none">Типы накопителей памяти</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="ramAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-ram">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ram" aria-expanded="false" aria-controls="ram"><img src="/media/home/ram.svg" style="width: 32px; margin-right: 10px;">Оперативная память</button>
+					</h2>
+					<div id="ram" class="accordion-collapse collapse" aria-labelledby="flush-ram" data-bs-parent="#ramAccordion">
+						<div class="accordion-body"><a href="/rams/" class="text-dark text-decoration-none">Оперативная память</a></div>
+						<div class="accordion-body"><a href="/ram_models/" class="text-dark text-decoration-none">Модели оперативной памяти</a></div>
+						<div class="accordion-body"><a href="/ram_vendors/" class="text-dark text-decoration-none">Производители оперативной памяти</a></div>
+						<div class="accordion-body"><a href="/ram_types/" class="text-dark text-decoration-none">Типы оперативной памяти</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="videocardAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-videocard">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#videocard" aria-expanded="false" aria-controls="videocard"><img src="/media/home/videocard.svg" style="width: 32px; margin-right: 10px;">Видеокарты</button>
+					</h2>
+					<div id="videocard" class="accordion-collapse collapse" aria-labelledby="flush-videocard" data-bs-parent="#videocardAccordion">
+						<div class="accordion-body"><a href="/videocards/" class="text-dark text-decoration-none">Видеокарты</a></div>
+						<div class="accordion-body"><a href="/videocard_models/" class="text-dark text-decoration-none">Модели видеокарт</a></div>
+						<div class="accordion-body"><a href="/videocard_vendors/" class="text-dark text-decoration-none">Производители видеокарт</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="monitorAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-monitor">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#monitor" aria-expanded="false" aria-controls="monitor"><img src="/media/home/monitor.svg" style="width: 32px; margin-right: 10px;">Мониторы</button>
+					</h2>
+					<div id="monitor" class="accordion-collapse collapse" aria-labelledby="flush-monitor" data-bs-parent="#monitorAccordion">
+						<div class="accordion-body"><a href="/monitors/" class="text-dark text-decoration-none">Мониторы</a></div>
+						<div class="accordion-body"><a href="/monitor_models/" class="text-dark text-decoration-none">Модели мониторов</a></div>
+						<div class="accordion-body"><a href="/monitor_vendors/" class="text-dark text-decoration-none">Производители мониторов</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="softwareAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-software">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#software" aria-expanded="false" aria-controls="software"><img src="/media/home/software.svg" style="width: 32px; margin-right: 10px;">Программное обеспечение</button>
+					</h2>
+					<div id="software" class="accordion-collapse collapse" aria-labelledby="flush-software" data-bs-parent="#softwareAccordion">
+						<div class="accordion-body"><a href="/softwares/" class="text-dark text-decoration-none">Программное обеспечение</a></div>
+						<div class="accordion-body"><a href="/software_vendors/" class="text-dark text-decoration-none">Издатели программного обеспечения</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="printerAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-printer">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#printer" aria-expanded="false" aria-controls="printer"><img src="/media/home/software.svg" style="width: 32px; margin-right: 10px;">Принтеры</button>
+					</h2>
+					<div id="printer" class="accordion-collapse collapse" aria-labelledby="flush-printer" data-bs-parent="#printerAccordion">
+						<div class="accordion-body"><a href="/printers/" class="text-dark text-decoration-none">Принтеры</a></div>
+						<div class="accordion-body"><a href="/printer_models/" class="text-dark text-decoration-none">Модели принтеров</a></div>
+						<div class="accordion-body"><a href="/printer_vendors/" class="text-dark text-decoration-none">Производители принтеров</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="projectorAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-projector">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#projector" aria-expanded="false" aria-controls="projector"><img src="/media/home/software.svg" style="width: 32px; margin-right: 10px;">Проекторы</button>
+					</h2>
+					<div id="projector" class="accordion-collapse collapse" aria-labelledby="flush-projector" data-bs-parent="#projectorAccordion">
+						<div class="accordion-body"><a href="/projectors/" class="text-dark text-decoration-none">Проекторы</a></div>
+						<div class="accordion-body"><a href="/projector_models/" class="text-dark text-decoration-none">Модели проекторов</a></div>
+						<div class="accordion-body"><a href="/projector_vendors/" class="text-dark text-decoration-none">Производители проекторов</a></div>
+					</div>
+				</div>
+			</li>
+
+			<li class="nav-item accordion accordion-flush" id="tvAccordion">
+				<div class="accordion-item">
+					<h2 class="accordion-header" id="flush-tv">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tv" aria-expanded="false" aria-controls="tv"><img src="/media/home/software.svg" style="width: 32px; margin-right: 10px;">Телевизоры</button>
+					</h2>
+					<div id="tv" class="accordion-collapse collapse" aria-labelledby="flush-tv" data-bs-parent="#tvAccordion">
+						<div class="accordion-body"><a href="/tvs/" class="text-dark text-decoration-none">Телевизоры</a></div>
+						<div class="accordion-body"><a href="/tv_models/" class="text-dark text-decoration-none">Модели телевизоров</a></div>
+						<div class="accordion-body"><a href="/tv_vendors/" class="text-dark text-decoration-none">Производители телевизоров</a></div>
+					</div>
+				</div>
+			</li>
+			{% endif %}
+		</ul>
+		{% if user.is_authenticated %}
+			<footer class="sticky-footer p-4 bg-light">
+		        <div class="d-flex align-items-center">
+		        	{% if user.photo %}
+	        			<img src="{{ user.photo.url }}" alt="User Image" style="border-radius: 50%; width: 50px; height: 50px;">
+	    			{% else %}
+	        			<img src="{{ default_image }}" alt="User Image" style="border-radius: 50%; width: 50px; height: 50px;">
+	    			{% endif %}
+		            <div class="ml-3">
+		                <div class="font-weight-bold">{{user.last_name}} {{user.first_name}} {{user.patronymic}}<br>{% for group in groups %} <p style="font-size: 12px; color: grey;">{{group.name}}</p> {% endfor %}</div>
+		                <a href="/users/logout/" class="btn btn-primary mt-2">Выйти</a>
+		            </div>
+		        </div>
+		    </footer>
+		{% endif %}
+	</nav>
+	<a id="menu-btn">&gt;</a>
+	<section class="p-4 my-container">
+		{% block content %} {% endblock %}
+	</section>
+	
+	<script src="{% static 'StockTaking/lib/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static 'StockTaking/js/sidemenu.js' %}"></script>
+</body>
+</html>

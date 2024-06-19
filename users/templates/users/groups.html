@@ -1,0 +1,220 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+<link type="text/css" href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" />
+
+<style type="text/css">
+    @media (max-width: 1457.98px) {
+        .project-list-table {
+            display: none;
+        }
+
+        .d-md-block {
+            display: none !important;
+        }
+        .d-md-none {
+            display: block !important;
+        }
+    }
+
+    @media (min-width: 1458px) {
+        .user-card {
+            display: none;
+        }
+
+        .d-md-block {
+            display: block !important;
+        }
+        .d-md-none {
+            display: none !important;
+        }
+    }
+</style>
+
+<div class="accordion d-block d-md-none" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Фильтры
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form id="filter-form-mobile" method="GET" class="d-block d-md-none">
+                    <div class="mb-3">
+                        <label for="isResponsible" class="form-label">Может быть установлена:</label>
+                        <select class="form-select" id="isResponsible" name="is_responsible">
+                            <option value="">Все варианты</option>
+                            {% if selected_is_responsible == 'True' %}
+                                <option selected value="True">Да</option>
+                            {% else %}
+                                <option value="True">Да</option>
+                            {% endif %}
+                            {% if selected_is_responsible == 'False' %}
+                                <option selected value="False">Нет</option>
+                            {% else %}
+                                <option value="False">Нет</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <h5 class="card-title">Материнские платы</h5>
+        </div>
+        
+        {% if not all_filters|is_empty_values %}
+            <div class="d-md-block">
+                <div>Фильтры: </div>
+                {% for filter in all_filters %}
+                    {% if filter.value != "" %}
+                        {% if filter.value == "True" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Да<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% elif filter.value == "False" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Нет<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% else %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: {{ filter.value }}<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+            <div>
+                <a href="/groups/add_group/" class="btn btn-primary">Создать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table project-list-table table-nowrap align-middle table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">Название</th>
+                        <th scope="col">Права</th>
+                        <th scope="col">
+                            Ответственный
+                            <i class="bx bx-search" id="canInstalling-filter-icon" style="cursor: pointer;"></i>
+                            <div id="canInstalling-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="canInstalling-search" placeholder="Может быть установлена..">
+                                <ul id="canInstalling-list">
+                                    <li data-value=""><a href="#">Все варинаты</a></li>
+                                    <li data-value="True"><a href="#">Да</a></li>
+                                    <li data-value="False"><a href="#">Нет</a></li>
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col" style="width: 200px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for group in groups %}
+                    <tr>
+                        <td>{{ group.name|wrap_string }}</td>
+                        <td>{% for perm in group.permissions.all %}{{ perm.name }}<br>{% endfor %}</td>
+                        <td>{{ group.model.vendor.name|wrap_string }}</td>
+                        <td>{{ group.computer.inventory_number|wrap_string }}</td>
+                        {% if group.can_installing %}
+                            <td><span class="badge badge-soft-success mb-0">Да</span></td>
+                        {% else %}
+                            <td><span class="badge badge-soft-danger mb-0">Нет</span></td>
+                        {% endif %}
+                        {% if group.is_updating %}
+                            <td><span class="badge badge-soft-success mb-0">Да</span></td>
+                        {% else %}
+                            <td><span class="badge badge-soft-danger mb-0">Нет</span></td>
+                        {% endif %}
+                        <td>
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <a href="/groups/{{ group.id }}/edit_group/" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a href="javascript:void(0);" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row d-md-none">
+    {% for group in groups %}
+    <div class="col-12 card">
+        <div class="card-body">
+            <div><h5 class="text-body">{{ group.name }}</h5></div>
+            <p class="card-text"><b>Модель:</b> {{ group.model.name }}</p>
+            <p class="card-text"><b>Производитель:</b> {{ group.model.vendor }}</p>
+            {% if group.computer %}
+                <p class="card-text"><b>Установлена в:</b> {{ group.computer }}</p>
+            {% endif %}
+            {% if group.can_installing %}
+                <p class="card-text text-success"><b>Может быть установлена в другой компьютер</b></p>
+            {% else %}
+                <p class="card-text text-danger"><b>Не может быть установлена в другой компьютер</b></p>
+            {% endif %}
+            {% if group.is_updating %}
+                <p class="card-text text-success"><b>Обновляется</b></p>
+            {% else %}
+                <p class="card-text text-danger"><b>Не обновляется</b></p>
+            {% endif %}
+            <a href="/groups/{{ group.id }}/edit_group/" class="btn btn-sm btn-primary">Редактировать</a>
+            <a href="/groups/{{ group.id }}/edit_group/" class="btn btn-sm btn-danger">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<script src="{% static 'StockTaking/js/list.js' %}"></script>
+
+{% endblock %}
+{% block pagination %}
+{% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% elif p >= page_obj.number|add:-4 and p <= page_obj.number|add:4 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

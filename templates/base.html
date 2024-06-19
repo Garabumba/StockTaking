@@ -1,0 +1,479 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{title}}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link type="text/css" href="{% static 'StockTaking/lib/css/bootstrap.min.css' %}" rel="stylesheet" />
+	<link type="text/css" href="{% static 'StockTaking/css/site.css' %}" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+	<div class="wrapper">
+		<aside id="sidebar" class="collapsed">
+			<div class="h-100">
+				<div class="sidebar-logo">
+					<a href="/">StockTaking</a>
+				</div>
+				<ul class="sidebar-nav">
+					<!-- <li class="sidebar-header">
+						Admin Elements
+					</li> -->
+					
+					{% if perms.home.view_university %}
+						<li class="sidebar-item">
+							<a href="/" class="sidebar-link">
+								<img src="/media/home/home.svg">
+								<span>Главная</span>
+							</a>
+						</li>
+					{% endif %}
+					
+					{% if perms.home.view_computer %}
+						<li class="sidebar-item">
+							<a href="/computers/" class="sidebar-link">
+								<img src="/media/home/pc.svg">
+								<span>Компьютеры</span>
+							</a>
+						</li>
+					{% endif %}
+					
+					{% if perms.home.view_audience and perms.home.view_audiencetype %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#audiences" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/audience.svg">
+								Аудитории
+							</a>
+							<ul id="audiences" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								<li class="sidebar-item">
+									<a href="/audiences/" class="sidebar-link">Аудитории</a>
+								</li>
+								<li class="sidebar-item">
+									<a href="/audience_types/" class="sidebar-link">Типы аудиторий</a>
+								</li>
+							</ul>
+						</li>
+					{% elif perms.home.view_audience %}
+						<li class="sidebar-item">
+							<a href="/audiences/" class="sidebar-link">
+								<img src="/media/home/audience.svg">
+								<span>Аудитории</span>
+							</a>
+						</li>
+					{% endif %}
+		
+					{% if perms.users.view_task %}
+						<li class="sidebar-item">
+							<a href="/tasks/" class="sidebar-link">
+								<img src="/media/home/tasks.svg">
+								<span>Задачи</span>
+							</a>
+						</li>
+					{% endif %}
+		
+					{% if perms.home.view_universitybody %}
+						<li class="sidebar-item">
+							<a href="/university_bodies/" class="sidebar-link">
+								<img src="/media/home/university_body.svg">
+								<span>Корпуса</span>
+							</a>
+						</li>
+					{% endif %}
+		
+					<li class="sidebar-item">
+						<a href="/analytic/" class="sidebar-link">
+							<img src="/media/home/analytic.svg">
+							<span>Аналитика</span>
+						</a>
+					</li>
+					
+					{% if user.group.is_responsible %}
+						<li class="sidebar-item">
+							<a href="/upload_information/" class="sidebar-link">
+								<img src="/media/home/upload.svg">
+								<span>Загрузить информацию</span>
+							</a>
+						</li>
+					{% endif %}
+					
+					{% if perms.users.view_user %}
+						<li class="sidebar-item">
+							<a href="/users/users/" class="sidebar-link">
+								<img src="/media/home/users.svg">
+								<span>Пользователи</span>
+							</a>
+						</li>
+					{% endif %}
+					
+					{% if user.group.is_responsible %}
+						<li class="sidebar-item">
+							<a href="/linked_technique/" class="sidebar-link">
+								<img src="/media/home/upload.svg">
+								<span>Моя техника</span>
+							</a>
+						</li>
+					{% endif %}
+					
+					{% if perms.home.view_motherboard or perms.home.view_motherboardmodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#motherboards" data-bs-toggle="collapse" aria-expanded="false">
+								<img src="/media/home/motherboard.svg">
+								Материнские платы
+							</a>
+							<ul id="motherboards" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_motherboard %}
+									<li class="sidebar-item">
+										<a href="/motherboards/" class="sidebar-link">Материнские платы</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_motherboardmodel %}
+									<li class="sidebar-item">
+										<a href="/motherboard_models/" class="sidebar-link">Модели материнских плат</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/motherboard_vendors/" class="sidebar-link">Производители материнских плат</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+					
+					{% if perms.home.view_cpu or perms.home.view_cpumodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#cpus" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/cpu.svg">
+								Процессоры
+							</a>
+							<ul id="cpus" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_cpu %}
+									<li class="sidebar-item">
+										<a href="/cpus/" class="sidebar-link">Процессоры</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_cpumodel %}
+									<li class="sidebar-item">
+										<a href="/cpu_models/" class="sidebar-link">Модели процессоров</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/cpu_vendors/" class="sidebar-link">Производители процессоров</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_storage or perms.home.view_storagemodel or perms.home.view_vendor or perms.home.view_storagetype %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#storages" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/storage.svg">
+								Накопители памяти
+							</a>
+							<ul id="storages" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_storage %}
+									<li class="sidebar-item">
+										<a href="/storages/" class="sidebar-link">Накопители памяти</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_storagemodel %}
+									<li class="sidebar-item">
+										<a href="/storage_models/" class="sidebar-link">Модели накопителей памяти</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/storage_vendors/" class="sidebar-link">Производители накопителей памяти</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_storagetype %}
+									<li class="sidebar-item">
+										<a href="/storage_types/" class="sidebar-link">Типы накопителей памяти</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_ram or perms.home.view_rammodel or perms.home.view_vendor or perms.home.view_ramtype %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#rams" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/ram.svg">
+								Оперативная память
+							</a>
+							<ul id="rams" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_ram %}
+									<li class="sidebar-item">
+										<a href="/rams/" class="sidebar-link">Оперативная память</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_rammodel %}
+									<li class="sidebar-item">
+										<a href="/ram_models/" class="sidebar-link">Модели оперативной памяти</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/ram_vendors/" class="sidebar-link">Производители оперативной памяти</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_ramtype %}
+									<li class="sidebar-item">
+										<a href="/ram_types/" class="sidebar-link">Типы оперативной памяти</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_videocard or perms.home.view_videocardmodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#videocards" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/videocard.svg">
+								Видеокарты
+							</a>
+							<ul id="videocards" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_videocard %}
+									<li class="sidebar-item">
+										<a href="/videocards/" class="sidebar-link">Видеокарты</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_videocardmodel %}
+									<li class="sidebar-item">
+										<a href="/videocard_models/" class="sidebar-link">Модели видеокарт</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/videocard_vendors/" class="sidebar-link">Производители видеокарт</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_monitor or perms.home.view_monitormodel or perms.home.view_vendor or perms.home.add_resolution or perms.home.add_resolution_format %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#monitors" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/monitor.svg">
+								Мониторы
+							</a>
+							<ul id="monitors" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_monitor %}
+									<li class="sidebar-item">
+										<a href="/monitors/" class="sidebar-link">Мониторы</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_monitormodel %}
+									<li class="sidebar-item">
+										<a href="/monitor_models/" class="sidebar-link">Модели мониторов</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/monitor_vendors/" class="sidebar-link">Производители мониторов</a>
+									</li>
+								{% endif %}
+								{% if perms.home.add_resolution %}
+									<li class="sidebar-item">
+										<a href="/resolutions/" class="sidebar-link">Разрешения</a>
+									</li>
+								{% endif %}
+								{% if perms.home.add_resolution_format %}
+									<li class="sidebar-item">
+										<a href="/resolution_formats/" class="sidebar-link">Соотношения сторон</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_software or perms.home.view_vendor or perms.home.view_softwaretype %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#softwares" data-bs-toggle="collapse" aria-expanded="false">
+								<!--<i class="fa-solid fa-list pe-2"></i>-->
+								<img src="/media/home/software.svg">
+								Программное обеспечение
+							</a>
+							<ul id="softwares" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_software %}
+									<li class="sidebar-item">
+										<a href="/softwares/" class="sidebar-link">Программное обеспечение</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/software_vendors/" class="sidebar-link">Производители программного обеспечения</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_softwaretype %}
+									<li class="sidebar-item">
+										<a href="/software_types/" class="sidebar-link">Типы программного обеспечения</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_printer or perms.home.view_printermodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#printers" data-bs-toggle="collapse" aria-expanded="false">
+								<img src="/media/home/printer.svg">
+								Принтеры
+							</a>
+							<ul id="printers" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_printer %}
+									<li class="sidebar-item">
+										<a href="/printers/" class="sidebar-link">Принтеры</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_printermodel %}
+									<li class="sidebar-item">
+										<a href="/printer_models/" class="sidebar-link">Модели принтеров</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/printer_vendors/" class="sidebar-link">Производители принтеров</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_projector or perms.home.view_projectormodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#projectors" data-bs-toggle="collapse" aria-expanded="false">
+								<img src="/media/home/projector.svg">
+								Проекторы
+							</a>
+							<ul id="projectors" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_projector %}
+									<li class="sidebar-item">
+										<a href="/projectors/" class="sidebar-link">Проекторы</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_projectormodel %}
+									<li class="sidebar-item">
+										<a href="/projector_models/" class="sidebar-link">Модели проекторов</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/projector_vendors/" class="sidebar-link">Производители проекторов</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+
+					{% if perms.home.view_tv or perms.home.view_tvmodel or perms.home.view_vendor %}
+						<li class="sidebar-item">
+							<a href="#" class="sidebar-link collapsed" data-bs-target="#tvs" data-bs-toggle="collapse" aria-expanded="false">
+								<img src="/media/home/tv.svg">
+								Телевизоры
+							</a>
+							<ul id="tvs" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+								{% if perms.home.view_tv %}
+									<li class="sidebar-item">
+										<a href="/tvs/" class="sidebar-link">Телевизоры</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_tvmodel %}
+									<li class="sidebar-item">
+										<a href="/tv_models/" class="sidebar-link">Модели телевизоров</a>
+									</li>
+								{% endif %}
+								{% if perms.home.view_vendor %}
+									<li class="sidebar-item">
+										<a href="/tv_vendors/" class="sidebar-link">Производители телевизоров</a>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</aside>
+		<div class="main collapsed" id="main-content">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+				<div class="navbar-collapse navbar">
+					<ul class="navbar-nav">
+						<li class="nav-item dropdown">
+							<a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+								<!-- <img src="image/profile.png" class="avatar img-fluid rounded"> -->
+								{% if user.photo %}
+									<img src="{{ user.photo.url }}" alt="User Image" class="avatar img-fluid rounded">
+								{% else %}
+									<img src="{{ default_image }}" alt="User Image" class="avatar img-fluid rounded">
+								{% endif %}
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<a href="/users/profile/" class="dropdown-item">Профиль</a>
+								<a href="/users/logout/" class="dropdown-item">Выйти</a>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<div class="content px-3 py-2">
+				<div class="container-fluid">
+					<div class="mb-3">
+						{% block content %}
+						{% endblock %}
+						{% block pagination %}
+						{% endblock %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		function applyResponsiveClass() {
+			const buttons = document.querySelectorAll('a.btn');
+			buttons.forEach(button => {
+				if (window.innerWidth < 768) {
+					button.classList.add('btn-sm');
+				} else {
+					button.classList.remove('btn-sm');
+				}
+			});
+		}
+
+		function applyResponsiveClassToButtons() {
+			const buttons = document.querySelectorAll('button');
+			buttons.forEach(button => {
+				if (window.innerWidth < 768) {
+					button.classList.add('btn-sm');
+				} else {
+					button.classList.remove('btn-sm');
+				}
+			});
+		}
+
+		applyResponsiveClassToButtons();
+		applyResponsiveClass();
+
+		window.addEventListener('resize', applyResponsiveClassToButtons);
+		window.addEventListener('resize', applyResponsiveClass);
+	</script>
+	<script src="{% static 'StockTaking/lib/js/bootstrap.bundle.min.js' %}"></script>
+	<script src="{% static 'StockTaking/js/sidemenu.js' %}"></script>
+</body>
+</html>

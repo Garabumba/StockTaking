@@ -1,0 +1,429 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+<head>
+    <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css"/>
+    
+</head>
+{% block content %}
+    <style>
+        .content-block {
+            display: none;
+        }
+        .content-block.active-block {
+            display: block;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="d-none d-md-block row justify-content-center">
+            <div class="col-12">
+                <div class="d-flex flex-wrap justify-content-start align-items-start">
+                    <button id="computer-button" class="fs-7 me-4 mb-2 btn btn-primary" onclick="showBlock('computer-block')">Общая информация</button>
+                    <button id="motherboard-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('motherboard-block')">Материнская плата</button>
+                    <button id="cpu-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('cpu-block')">Процессор</button>
+                    <button id="ram-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('ram-block')">Оперативная память</button>
+                    <button id="storage-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('storage-block')">Накопители памяти</button>
+                    <button id="drive-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('drive-block')">Разделы накопителей памяти</button>
+                    <button id="videocard-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('videocard-block')">Видеокарты</button>
+                    <button id="monitor-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('monitor-block')">Мониторы</button>
+                    <button id="software-button" class="fs-7 me-4 mb-2 btn btn-secondary" onclick="showBlock('software-block')">Программное обеспечение</button>
+                </div>
+            </div>
+        </div>
+        <div class="d-block d-md-none row justify-content-center">
+            <div class="col-12">
+                <select class="form-select" aria-label="Default select example">
+                    <!--<option selected>Open this select menu</option>-->
+                    <option selected value="computer-block">Общая информация</option>
+                    <option value="motherboard-block">Материнская плата</option>
+                    <option value="cpu-block">Процессор</option>
+                    <option value="ram-block">Оперативная память</option>
+                    <option value="storage-block">Накопители памяти</option>
+                    <option value="drive-block">Разделы накопителей памяти</option>
+                    <option value="videocard-block">Видеокарты</option>
+                    <option value="monitor-block">Мониторы</option>
+                    <option value="software-block">Программное обеспечение</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    
+    <div id="computer-block" class="content-block active-block">
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <h1 id="computer" data-id="{{computer.inventory_number}}">Компьютер {{computer.inventory_number}}</h1>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title"><b>Имя компьютера:</b> {{computer.name}}</h5>
+                        <p class="card-text"><b>Инвентарный номер:</b> {{computer.inventory_number}}</p>
+                        <p class="card-text">{% for os in oss %}<b>Операционная система:</b> {{os.os.name}}{% endfor %}</p>
+                        <p class="card-text"><b>IP:</b> {{computer.ip}}</p>
+                        <p class="card-text"><b>Разрядность:</b> {{computer.arch}}</p>
+                        <p class="card-text"><b>Статус компьютера:</b> {{computer.status}}</p>
+                        <p class="card-text"><b>Аудитория:</b> <a href="/audience/{{computer.audience.id}}">{{computer.audience.name}}</a></p>
+                        <a href="/computers/{{ computer.inventory_number }}/edit_computer/" class="btn btn-primary">Редактировать</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="motherboard-block" class="content-block">
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <h1>Материнская плата</h1>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ motherboard.name }}</h5>
+                        <p class="card-text"><b>Модель:</b> {{ motherboard.model }}</p>
+                        <p class="card-text"><b>Производитель:</b> {{ motherboard.model.vendor }}</p>
+                        <a href="/motherboards/{{ motherboard.id }}/edit_motherboard/" class="btn btn-primary">Редактировать</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row-md-3">
+                <h2>История материнских плат</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Материнская плата</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_motherboard in old_motherboards %}
+                            <tr>
+                                <td>{{old_motherboard.motherboard.name}}</td>
+                                <td>{{old_motherboard.installed_date}}</td>
+                                <td>{{old_motherboard.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="cpu-block" class="content-block">
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <h1>Процессор</h1>
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ cpu.name }}</h5>
+                        <p class="card-text"><b>Модель:</b> {{ cpu.model }}</p>
+                        <p class="card-text"><b>Производитель:</b> {{ cpu.model.vendor }}</p>
+                        <p class="card-text"><b>Ядра:</b> {{ cpu.model.cores }}</p>
+                        <p class="card-text"><b>Потоки:</b> {{ cpu.model.threads }}</p>
+                        <p class="card-text"><b>Частота:</b> {{ cpu.frequency }} МГц</p>
+                        <a href="/cpus/{{ cpu.id }}/edit_cpu/" class="btn btn-primary">Редактировать</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row-md-3">
+                <h2>История процессоров</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Процессор</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_cpu in old_cpus %}
+                            <tr>
+                                <td>{{old_cpu.cpu.name}}</td>
+                                <td>{{old_cpu.installed_date}}</td>
+                                <td>{{old_cpu.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="ram-block" class="content-block">
+        <div class="row mt-4">
+            <h1>Оперативная память</h1>
+            {% for ram in rams %}
+                <div class="col-md-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ ram.name }}</h5>
+                            <p class="card-text"><b>Модель:</b> {{ ram.model }}</p>
+                            <p class="card-text"><b>Производитель:</b> {{ ram.model.vendor }}</p>
+                            <p class="card-text"><b>Тип:</b> {{ ram.model.type }}</p>
+                            <p class="card-text"><b>Слот:</b> {{ ram.slot }}</p>
+                            <p class="card-text"><b>Объём памяти:</b> {{ ram.model.memory|divide:1024.0 }} ГБ</p>
+                            <p class="card-text"><b>Частота:</b> {{ ram.frequency }} МГц</p>
+                            <a href="/rams/{{ ram.id }}/edit_ram/" class="btn btn-primary">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row-md-3">
+                <h2>История оперативной памяти</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Оперативная память</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_ram in old_rams %}
+                            <tr>
+                                <td>{{old_ram.ram.name}}</td>
+                                <td>{{old_ram.installed_date}}</td>
+                                <td>{{old_ram.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="storage-block" class="content-block">
+        <div class="row mt-4">
+            <h1>Накопители памяти</h1>
+            {% for storage in storages %}
+                <div class="col-md-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ storage.name }}</h5>
+                            <p class="card-text"><b>Модель:</b> {{ storage.model }}</p>
+                            <p class="card-text"><b>Производитель:</b> {{ storage.model.vendor }}</p>
+                            <p class="card-text"><b>Серийный номер:</b> {{ storage.serial_number }}</p>
+                            <p class="card-text"><b>Объём памяти:</b> {{ storage.model.memory|divide:1024.0 }} ГБ</p>
+                            <a href="/storages/{{ storage.id }}/edit_storage/" class="btn btn-primary">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row-md-3">
+                <h2>История накопителей памяти</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Накопитель памяти</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_storage in old_storages %}
+                            <tr>
+                                <td>{{old_storage.storage.name}}</td>
+                                <td>{{old_storage.installed_date}}</td>
+                                <td>{{old_storage.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="videocard-block" class="content-block">
+        <div class="row mt-4">
+            <h1>Видеокарты</h1>
+            {% for videocard in videocards %}
+                <div class="col-md-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ videocard.name }}</h5>
+                            <p class="card-text"><b>Модель:</b> {{ videocard.model }}</p>
+                            <p class="card-text"><b>Производители:</b> {{ videocard.model.vendor }} </p>
+                            <p class="card-text"><b>Объём видеопамяти:</b> {{ videocard.model.memory|divide:1024.0 }} ГБ</p>
+                            <a href="/videocards/{{ videocard.id }}/edit_videocard/" class="btn btn-primary">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row-md-3">
+                <h2>История видеокарт</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Видеокарта</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_videocard in old_videocards %}
+                            <tr>
+                                <td>{{old_videocard.videocard.name}}</td>
+                                <td>{{old_videocard.installed_date}}</td>
+                                <td>{{old_videocard.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="monitor-block" class="content-block">
+        <div class="row mt-4">
+            <h1>Мониторы</h1>
+            {% for monitor in monitors %}
+                <div class="col-md-3">
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ monitor.name }}</h5>
+                            <p class="card-text"><b>Модель:</b> {{ monitor.model }}</p>
+                            <p class="card-text"><b>Производитель:</b> {{ monitor.model.vendor }}</p>
+                            <p class="card-text"><b>Инвентарный номер:</b> {{ monitor.inventory_number }}</p>
+                            <p class="card-text"><b>Серийный номер:</b> {{ monitor.serial_number }}</p>
+                            <p class="card-text"><b>Разрешение:</b> {{ monitor.resolution }}</p>
+                            <p class="card-text"><b>Формат разрешения:</b> {{ monitor.resolution.resolution_format }}</p>
+                            <a href="/monitors/{{ monitor.inventory_number }}/edit_monitor/" class="btn btn-primary">Редактировать</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="row-md-3">
+                <h2>История мониторов</h2>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr class="table-primary">
+                            <th scope="col">Монитор</th>
+                            <th scope="col">Дата установки</th>
+                            <th scope="col">Дата удаления</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for old_monitor in old_monitors %}
+                            <tr>
+                                <td>{{old_monitor.monitor.name}}</td>
+                                <td>{{old_monitor.installed_date}}</td>
+                                <td>{{old_monitor.removed_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="software-block" class="content-block">
+        <h1>Программное обеспечение</h1>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="table-primary">
+                    <th scope="col">Название</th>
+                    <th scope="col">Версия</th>
+                    <th scope="col">Издатель</th>
+                    <th scope="col">Расположение</th>
+                    <th scope="col">Дата установки/обновления</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for software in softwares %}
+                    <tr>
+                        <td>{{software.software}}</td>
+                        <td>{{software.version}}</td>
+                        <td>{{software.vendor}}</td>
+                        <td>{{software.folder}}</td>
+                        <td>{{software.install_date}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="drive-block" class="content-block">
+        <h1>Разделы накопителей памяти</h1>
+        <div class="container mt-5">
+            <div id="drives"></div>
+        </div>
+    </div>
+    
+    
+    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+    <script>
+        // Функция для отправки запроса на эндпоинт
+        function fetchData() {
+            var computerId = $('#computer').attr('data-id');
+            console.log(computerId);//document.getElementById('computer').value; // Получаем значение компьютера
+            var url = '/api/get_technique_info/?inventory_number=' + computerId;// + '&technique_type=1'; // Формируем URL для запроса
+
+            // Отправляем GET запрос
+            fetch(url)
+                .then(response => response.json()) // Преобразуем ответ в JSON
+                .then(data => {
+                    // Получаем информацию о дисках
+                    var drivesData = data.drives;
+
+                    // Создаем HTML для каждого диска и прогрессбара
+                    var html = '';
+                    drivesData.forEach(drive => {
+                        html += '<div class="container mt-5">';
+                        html += '<div class="row">';
+                        html += '<div class="col-sm-6">';
+                        html += '<div><b>Имя раздела: </b>' + drive.letter + '</div>';
+                        html += '<div><b>Всего памяти: </b>' + drive.total_memory + ' МБ</div>';
+                        html += '<div><b>Свободно памяти: </b>' + drive.free_memory + ' МБ</div>';
+                        html += '</div>';
+                        html += '<div class="col-sm-6">';
+                        html += `<h2>${drive.letter}</h2>`;
+                        html += '<div class="progress">';
+                        html += '<div class="progress-bar" role="progressbar" style="width: ' + (100 - (drive.free_memory / drive.total_memory * 100)) + '%" aria-valuenow="' + (100 - (drive.free_memory / drive.total_memory * 100)) + '" aria-valuemin="0" aria-valuemax="100">' + (100 - Math.round(drive.free_memory / drive.total_memory * 100)) + '%</div>';
+                        html += '</div>';
+                        html += `<div class="total-memory">Свободно: ${drive.free_memory} МБ из ${drive.total_memory} МБ</div>`;
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                    });
+
+                    // Вставляем HTML на страницу
+                    document.getElementById('drives').innerHTML = html;
+                })
+                .catch(error => console.error('Ошибка:', error));
+        }
+
+        // Вызываем функцию при загрузке страницы
+        window.onload = function() {
+            fetchData();
+        };
+
+        $('.form-select').on('change', function() {
+            //alert( this.value );
+            showBlock(this.value);
+        });
+
+        // Функция для показа нужного блока
+        function showBlock(blockId) {
+            var buttons = document.querySelectorAll('.fs-7');
+
+            // Сначала устанавливаем всем кнопкам класс btn-secondary
+            buttons.forEach(function(button) {
+                button.classList.remove('btn-primary');
+                button.classList.add('btn-secondary');
+            });
+
+            // Устанавливаем выбранной кнопке класс btn-primary
+            var selectedButton = document.getElementById(blockId.split('-')[0] + '-button');
+            selectedButton.classList.remove('btn-secondary');
+            selectedButton.classList.add('btn-primary');
+            // Hide all blocks
+            const blocks = document.querySelectorAll('.content-block');
+            blocks.forEach(block => {
+                block.classList.remove('active-block');
+            });
+            
+            // Show the selected block
+            const selectedBlock = document.getElementById(blockId);
+            if (selectedBlock) {
+                selectedBlock.classList.add('active-block');
+            }
+        }
+    </script>
+
+{% endblock %}

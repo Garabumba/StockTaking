@@ -1,0 +1,153 @@
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>-->
+
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+    .select2 {
+        width: 100% !important;
+    }
+</style>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <button class="nav-link active" onclick="openFields(event, 'Computers')" aria-current="page" href="#">Компьютеры</button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" onclick="openFields(event, 'Audiences')" href="#">Аудитории</button>
+    </li>
+</ul>
+
+<!--<form id="Computers" class="tabcontent">-->
+
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>Аналитика</h4>
+        </div>
+        <div class="card-body">
+            <form id="Computers" class="tabcontent">
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="ramsInput" class="form-label">Выберите количество оперативной памяти</label>
+                        <select class="select2 form-control" id="ramsInput">
+                            <option value="">Любое количество</option>
+                            {% for ram in rams %}    
+                                <option value="{{ram}}">{{ ram }} ГБ</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="coresInput" class="form-label">Выберите количество ядер процессора</label>
+                        <select class="select2 form-control" id="coresInput">
+                            <option value="">Любое количество</option>
+                            {% for core in cores %}    
+                                <option value="{{core}}">{{ core }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="videoMemoryInput" class="form-label" id="ramsInput">Выберите количество видеопамяти</label>
+                        <select class="select2 form-control" id="videoMemoryInput">
+                            <option value="">Любое количество</option>
+                            {% for video_memory in video_memories %}    
+                                <option value="{{video_memory}}">{{ video_memory }} ГБ</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="osInput" class="form-label" id="ramsInput">Выберите операционную систему</label>
+                        <select class="select2 form-control" id="osInput">
+                            <option value="">Любая операционная система</option>
+                            {% for os in oss %}    
+                                <option value="{{os}}">{{ os }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="softwaresInput" class="form-label" id="ramsInput">Выберите программное обеспечение</label>
+                        <select class="select2 form-control" id="softwaresInput" multiple>
+                            <option value="">Любое программное обеспечение</option>
+                            {% for software in softwares %}    
+                                <option value="{{software}}">{{ software }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="with_videocard" class="form-check-input" id="videocardCheckbox" checked>
+                        <label class="form-check-label" for="videocardCheckbox">С видеокартой</label>
+                    </div>
+                </div>
+            </form>
+
+            <form id="Audiences" class="tabcontent" style="display: none;">
+                <div class="mb-3">
+                    <div class="mb-3">
+                        <label for="computersInput" class="form-label">Выберите макс. кол-во компьютеров</label>
+                        <select class="select2 form-control" id="computersInput">
+                            <option value="">Любое количество</option>
+                            {% for max_computer in max_computers %}    
+                                <option value="{{max_computer}}">{{ max_computer }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="placesInput" class="form-label">Выберите вместимость</label>
+                        <select class="select2 form-control" id="placesInput">
+                            <option value="">Любое количество</option>
+                            {% for max_place in max_places %}    
+                                <option value="{{max_place}}">{{ max_place }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input type="checkbox" name="with_projector" class="form-check-input" id="projectorCheckbox" checked>
+                        <label class="form-check-label" for="projectorCheckbox">С проектором</label>
+                    </div>
+                </div>
+            </form>
+            <div class="text-end">
+                <button class="btn btn-primary" id="rr">Получить</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+
+<!--</form>-->
+
+
+
+
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+    $('.select2').select2();
+});
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="{% static 'StockTaking/js/list.js' %}"></script>
+<script src="{% static 'StockTaking/js/test.js' %}"></script>
+
+{% endblock %}
+
+

@@ -1,0 +1,292 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link type="text/css" href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" />
+
+<style type="text/css">
+    @media (max-width: 1899.98px) {
+        .project-list-table {
+            display: none;
+        }
+
+        .d-md-block {
+            display: none !important;
+        }
+        .d-md-none {
+            display: block !important;
+        }
+    }
+
+    @media (min-width: 1900px) {
+        .user-card {
+            display: none;
+        }
+
+        .d-md-block {
+            display: block !important;
+        }
+        .d-md-none {
+            display: none !important;
+        }
+    }
+</style>
+
+<div class="accordion d-block d-md-none" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Фильтры
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form id="filter-form-mobile" method="GET" class="d-block d-md-none">
+                    <div class="mb-3">
+                        <label for="name-mobile" class="form-label">Выберите название:</label>
+                        <select class="form-select select2" id="name-mobile" name="name">
+                            <option value="">Любое</option>
+                            {% for name in names %}
+                                {% if name|stringformat:"s" == selected_name %}
+                                    <option value="{{ name }}" selected>{{ name }}</option>
+                                {% else %}
+                                    <option value="{{ name }}">{{ name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="inventoryNumber" class="form-label">Выберите инвентарный номер:</label>
+                        <select class="form-select select2" id="inventoryNumber" name="inventory_number">
+                            <option value="">Любой инвентарный номер</option>
+                            {% for inventory_number in inventory_numbers %}
+                                {% if inventory_number|stringformat:"s" == selected_inventory_number %}
+                                    <option selected value="{{ inventory_number }}">{{ inventory_number }}</option>
+                                {% else %}
+                                    <option value="{{ inventory_number }}">{{ inventory_number }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="type" class="form-label">Выберите тип:</label>
+                        <select class="form-select select2" id="type" name="type">
+                            <option value="">Все типы</option>
+                            {% for type in types %}
+                                {% if type.id|stringformat:"s" == selected_type %}
+                                    <option selected value="{{ type.id }}">{{ type.name }}</option>
+                                {% else %}
+                                    <option value="{{ type.id }}">{{ type.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="audience" class="form-label">Выберите аудиторию:</label>
+                        <select class="form-select select2" id="audience" name="audience">
+                            <option value="">Все аудитории</option>
+                            {% for audience in audiences %}
+                                {% if audience.id|stringformat:"s" == selected_audience %}
+                                    <option selected value="{{ audience.id }}">{{ audience.name }}</option>
+                                {% else %}
+                                    <option value="{{ audience.id }}">{{ audience.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <h5 class="card-title">{{ title }}</h5>
+        </div>
+        
+        {% if not all_filters|is_empty_values %}
+            <div class="d-md-block">
+                <div>Фильтры: </div>
+                {% for filter in all_filters %}
+                    {% if filter.value != "" %}
+                        {% if filter.value == "True" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Да<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% elif filter.value == "False" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Нет<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% else %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: {{ filter.value }}<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+            <div>
+                <a href="/computers/add_computer/" class="btn btn-primary">Создать</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table project-list-table table-nowrap align-middle table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Название
+                            <i class="bx bx-search" id="name-filter-icon" style="cursor: pointer;"></i>
+                            <div id="name-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="name-search" placeholder="Название..">
+                                <ul id="name-list">
+                                    <li data-value=""><a href="#">Любое</a></li>
+                                    {% for name in names %}
+                                        <li data-value="{{ name }}"><a href="#">{{ name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            Инвентарный номер
+                            <i class="bx bx-search" id="inventoryNumber-filter-icon" style="cursor: pointer;"></i>
+                            <div id="inventoryNumber-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="inventoryNumber-search" placeholder="Поиск инвентарного номера..">
+                                <ul id="inventoryNumber-list">
+                                    <li data-value=""><a href="#">Все инвентарные номера</a></li>
+                                    {% for inventory_number in inventory_numbers %}
+                                    <li data-value="{{ inventory_number }}"><a href="#">{{ inventory_number }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            Тип
+                            <i class="bx bx-search" id="type-filter-icon" style="cursor: pointer;"></i>
+                            <div id="type-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="type-search" placeholder="Поиск аудитории..">
+                                <ul id="type-list">
+                                    <li data-value=""><a href="#">Любой тип</a></li>
+                                    {% for type in types %}
+                                    <li data-value="{{ type.id }}"><a href="#">{{ type.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            Аудитория
+                            <i class="bx bx-search" id="audience-filter-icon" style="cursor: pointer;"></i>
+                            <div id="audience-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="audience-search" placeholder="Поиск аудитории..">
+                                <ul id="audience-list">
+                                    <li data-value=""><a href="#">Все</a></li>
+                                    {% for audience in audiences %}
+                                    <li data-value="{{ audience.id }}"><a href="#">{{ audience.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col" style="width: 200px;">Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for technique_element in technique %}
+                    <tr>
+                        <td>{{ technique_element.name|wrap_string }}</td>
+                        <td>{{ technique_element.inventory_number|wrap_string }}</td>
+                        <td>{{ technique_element.technique_type.name|wrap_string }}</td>
+                        <td>{{ technique_element.audience.name|wrap_string }}</td>
+                        <td>
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <a data-id="{{ technique_element.name }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger btn-delete" data-url="/api/linked_technique/{{ technique_element.technique_type.id }}/{{ technique_element.inventory_number }}/delete/"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row d-md-none">
+    {% for technique_element in technique %}
+    <div class="col-12 card">
+        <div class="card-body">
+            <div><h5 class="text-body">{{ technique_element.inventory_number }}</h5></div>
+            <p class="card-text"><b>Название:</b> {{ technique_element.name }}</p>
+            <p class="card-text"><b>Тип:</b> {{ technique_element.technique_type.name }}</p>
+            <p class="card-text"><b>Аудитория:</b> {{ technique_element.audience.name }}</p>
+            <a data-id="{{ technique_element.name }}" data-url="/api/linked_technique/{{ technique_element.technique_type.id }}/{{ technique_element.inventory_number }}/delete/" class="btn btn-sm btn-danger btn-delete">Удалить</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalBodyContent">Выберите вариант удаления.<br>Удалить только компьютер - удалит компьютер, но все его комплектующие останутся в справочниках.<br>Удалить всё - удалит компьютер вместе со всеми комплектующими.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmDelete">Да</button>
+                <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="{% static 'StockTaking/js/list.js' %}"></script>
+<script src="{% static 'StockTaking/js/delete.js' %}"></script>
+
+{% endblock %}
+{% block pagination %}
+{% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% elif p >= page_obj.number|add:-4 and p <= page_obj.number|add:4 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

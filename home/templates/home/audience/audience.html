@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Аудитория {{audience.audience_name}}</h1>
+<link type="text/css" href="{% static 'StockTaking/css/draw.css' %}" rel="stylesheet" />
+<link type="text/css" href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" />
+<style type="text/css">
+    @media (min-width: 1100px) {
+        .t {
+            display: grid;
+        }
+        .cht {
+            display: block;
+        }
+        .d-md-none {
+            display: none !important;
+        }
+    }
+
+    @media (max-width: 1099.98px) {
+        .t, .cht {
+            display: none !important;
+        }
+        .d-md-none {
+            display: block !important;
+        }
+    }
+</style>
+
+<div class="form-check form-switch cht">
+  {% if perms.home.change_audience %}
+  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Режим редактирования</label>
+  {% else %}
+  <input class="" type="text" id="flexSwitchCheckDefault" style="display: none;">
+  <label class="form-check-label" for="flexSwitchCheckDefault"></label>
+  {% endif %}
+
+</div>
+
+<main role="main" class="pb-3 t" id="main">
+    <div id="stage-parent">
+        <canvas id="canvas" style="border: 1px solid black;"></canvas>
+        <img src="/media/home/pc.png" id="my-image" style="display: none;">
+        <img src="/media/home/broken_pc.png" id="my-image2" style="display: none;">
+        <img src="/media/home/projector.png" id="my-image3" style="display: none;">
+        <img src="/media/home/broken_projector.png" id="my-image4" style="display: none;">
+        <img src="/media/home/printer.png" id="my-image5" style="display: none;">
+        <img src="/media/home/broken_printer.png" id="my-image6" style="display: none;">
+        <img src="/media/home/tv.png" id="my-image9" style="display: none;">
+        <img src="/media/home/broken_tv.png" id="my-image10" style="display: none;">
+    </div>
+    <div class="tools">
+    <div class="tech-header">ТЕХНИКА</div>
+    
+    {% for tech_type in technique_types %}
+        {% if tech_type.name != 'Монитор' %}
+            <div class="accordion" id="accordion{{tech_type.id}}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{tech_type.id}}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{tech_type.id}}" aria-expanded="true" aria-controls="collapse{{tech_type.id}}">
+                        {% if tech_type.name != 'МФУ' %} {{ tech_type }}ы {% else %} {{ tech_type }} {% endif %}
+                        </button>
+                    </h2>
+                    <div id="collapse{{tech_type.id}}" class="accordion-collapse collapse show" aria-labelledby="heading{{tech_type.id}}">
+                        <div class="accordion-body">
+                            <div class="tech-grid" id="tech{{tech_type.id}}">
+                            {% for technique_element in technique %}
+                                {% if technique_element.technique_type_id == 1 and tech_type.id == 1 %}
+                                    <div class="tech-item">
+                                        {% if technique_element.status.id == 2 %}
+                                            <img src="/media/home/broken_pc.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% else %}
+                                            <img src="/media/home/pc.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% endif %}
+                                        <p class="tech-label">{{ technique_element.inventory_number }}</p>
+                                    </div>
+                                {% elif technique_element.technique_type_id == 2 and tech_type.id == 2 %}
+                                    <div class="tech-item">
+                                        {% if technique_element.status.id == 2 %}
+                                            <img src="/media/home/broken_projector.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% else %}
+                                            <img src="/media/home/projector.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% endif %}
+                                        <p class="tech-label">{{ technique_element.inventory_number }}</p>
+                                    </div>
+                                {% elif technique_element.technique_type_id == 3 and tech_type.id == 3 %}
+                                    <div class="tech-item">
+                                        {% if technique_element.status.id == 2 %}
+                                            <img src="/media/home/broken_printer.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% else %}
+                                            <img src="/media/home/printer.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% endif %}
+                                        <p class="tech-label">{{ technique_element.inventory_number }}</p>
+                                    </div>
+                                {% elif technique_element.technique_type_id == 4 and tech_type.id == 4 %}
+                                    <div class="tech-item">
+                                        {% if technique_element.status.id == 2 %}
+                                            <img src="/media/home/broken_printer.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% else %}
+                                            <img src="/media/home/printer.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% endif %}
+                                        <p class="tech-label">{{ technique_element.inventory_number }}</p>
+                                    </div>
+                                {% elif technique_element.technique_type_id == 5 and tech_type.id == 5 %}
+                                    <div class="tech-item">
+                                        {% if technique_element.status.id == 2 %}
+                                            <img src="/media/home/broken_tv.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% else %}
+                                            <img src="/media/home/tv.png" class="tech-image newComputer" id="{{technique_element.inventory_number}}" data-id="{{technique_element.technique_type_id}}">
+                                        {% endif %}
+                                        <p class="tech-label">{{ technique_element.inventory_number }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+        
+    <div class="btn btn-success toolsElement" id="saveState" data-id="{{ audience.id }}">Сохранить</div>
+    </div>
+    <!-- Модальное окно -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Заголовок модального окна</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <!--<button type="button" class="btn btn-primary">Сохранить изменения</button>-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<div class="d-md-none">
+    {% for tech_type in technique_types %}
+        {% if tech_type.name != 'Монитор' %}
+            <div class="accordion" id="accordion{{tech_type.id}}-mobile">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{tech_type.id}}-mobile">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{tech_type.id}}-mobile" aria-expanded="true" aria-controls="collapse{{tech_type.id}}-mobile">
+                        {% if tech_type.name != 'МФУ' %} {{ tech_type }}ы {% else %} {{ tech_type }} {% endif %}
+                        </button>
+                    </h2>
+                    <div id="collapse{{tech_type.id}}-mobile" class="accordion-collapse collapse" aria-labelledby="heading{{tech_type.id}}-mobile">
+                        <div class="accordion-body">
+                            <div id="tech{{tech_type.id}}-mobile">
+                                {% for technique_element in technique %}
+                                    {% if technique_element.technique_type_id == 1 and tech_type.id == 1 %}
+                                        <div class="col-12 card">
+                                            <div class="card-body">
+                                                <div><h5 class="text-body">{{ technique_element.name }}</h5></div>
+                                                <p class="card-text"><b>Инвентарный номер:</b> {{ technique_element.inventory_number }}</p>
+                                                <p class="card-text"><b>Статус:</b> {{ technique_element.status.name }}</p>
+                                            </div>
+                                        </div>
+                                    {% elif technique_element.technique_type_id == 2 and tech_type.id == 2 %}
+                                        <div class="col-12 card">
+                                            <div class="card-body">
+                                                <div><h5 class="text-body">{{ technique_element.name }}</h5></div>
+                                                <p class="card-text"><b>Инвентарный номер:</b> {{ technique_element.inventory_number }}</p>
+                                                <p class="card-text"><b>Статус:</b> {{ technique_element.status.name }}</p>
+                                            </div>
+                                        </div>
+                                    {% elif technique_element.technique_type_id == 3 and tech_type.id == 3 %}
+                                        <div class="col-12 card">
+                                            <div class="card-body">
+                                                <div><h5 class="text-body">{{ technique_element.name }}</h5></div>
+                                                <p class="card-text"><b>Инвентарный номер:</b> {{ technique_element.inventory_number }}</p>
+                                                <p class="card-text"><b>Статус:</b> {{ technique_element.status.name }}</p>
+                                            </div>
+                                        </div>
+                                    {% elif technique_element.technique_type_id == 4 and tech_type.id == 4 %}
+                                        <div class="col-12 card">
+                                            <div class="card-body">
+                                                <div><h5 class="text-body">{{ technique_element.name }}</h5></div>
+                                                <p class="card-text"><b>Инвентарный номер:</b> {{ technique_element.inventory_number }}</p>
+                                                <p class="card-text"><b>Статус:</b> {{ technique_element.status.name }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>
+
+<script src="{% static 'StockTaking/js/fabric.js' %}"></script>
+<script src="{% static 'StockTaking/js/site.js' %}"></script>
+
+{% endblock %}

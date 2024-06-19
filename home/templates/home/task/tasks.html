@@ -1,0 +1,362 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link type="text/css" href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" />
+
+<style type="text/css">
+    @media (max-width: 1457.98px) {
+        .project-list-table {
+            display: none;
+        }
+
+        .d-md-block {
+            display: none !important;
+        }
+        .d-md-none {
+            display: block !important;
+        }
+    }
+
+    @media (min-width: 1458px) {
+        .user-card {
+            display: none;
+        }
+
+        .d-md-block {
+            display: block !important;
+        }
+        .d-md-none {
+            display: none !important;
+        }
+    }
+</style>
+
+<div class="accordion d-block d-md-none" id="accordionExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Фильтры
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <form id="filter-form-mobile" method="GET" class="d-block d-md-none">
+                    <div class="mb-3">
+                        <label for="name-mobile" class="form-label">Выберите название:</label>
+                        <select class="form-select select2" id="name-mobile" name="name">
+                            <option value="">Любое</option>
+                            {% for name in names %}
+                                {% if name|stringformat:"s" == selected_name %}
+                                    <option value="{{ name }}" selected>{{ name }}</option>
+                                {% else %}
+                                    <option value="{{ name }}">{{ name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>  
+
+                    <div class="mb-3">
+                        <label for="inventoryNumber-mobile" class="form-label">Выберите инвентарный номер:</label>
+                        <select class="form-select select2" id="inventoryNumber-mobile" name="inventory_number">
+                            <option value="">Любой инвентарный номер</option>
+                            {% for inventory_number in inventory_numbers %}
+                                {% if inventory_number|stringformat:"s" == selected_inventory_number %}
+                                    <option value="{{ inventory_number }}" selected>{{ inventory_number }}</option>
+                                {% else %}
+                                    <option value="{{ inventory_number }}">{{ inventory_number }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status-mobile" class="form-label">Выберите статус:</label>
+                        <select class="form-select select2" id="status-mobile" name="status">
+                            <option value="">Любой статус</option>
+                            {% for status in statuses %}
+                                {% if status.id|stringformat:"s" == selected_status %}
+                                    <option value="{{ status.id }}" selected>{{ status.status_name }}</option>
+                                {% else %}
+                                    <option value="{{ status.id }}">{{ status.status_name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Применить фильтр</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <h5 class="card-title">{{ title }}</h5>
+        </div>
+        
+        {% if not all_filters|is_empty_values %}
+            <div class="d-md-block">
+                <div>Фильтры: </div>
+                {% for filter in all_filters %}
+                    {% if filter.value != "" %}
+                        {% if filter.value == "True" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Да<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% elif filter.value == "False" %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: Нет<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% else %}
+                            <div class="badge badge-soft-primary">{{ filter.name }}: {{ filter.value }}<span class="mdi mdi-close-circle-outline delete-filter" id="{{ filter.type }}" style="cursor: pointer;"></span></div>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    {% if perms.users.add_task %}
+        <div class="col-md-6">
+            <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+                <div>
+                    <a href="/tasks/add_task/" class="btn btn-sm btn-primary">Создать</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table class="table project-list-table table-nowrap align-middle table-borderless">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Заголовок
+                            <i class="bx bx-search" id="name-filter-icon" style="cursor: pointer;"></i>
+                            <div id="name-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="name-search" placeholder="Название..">
+                                <ul id="name-list">
+                                    <li data-value=""><a href="#">Любое</a></li>
+                                    {% for name in names %}
+                                        <li data-value="{{ name }}"><a href="#">{{ name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col">Сообщение</th>
+                        <th scope="col">Постановщик</th>
+                        <th scope="col">Ответственные</th>
+                        <th scope="col">
+                            Статус
+                            <i class="bx bx-search" id="status-filter-icon" style="cursor: pointer;"></i>
+                            <div id="status-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="status-search" placeholder="Статус..">
+                                <ul id="status-list">
+                                    <li data-value=""><a href="#">Любой статус</a></li>
+                                    {% for status in statuses %}
+                                        <li data-value="{{ status.id }}"><a href="#">{{ status.status_name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </th>
+                        <th scope="col">
+                            Инвентарный номер
+                            <i class="bx bx-search" id="inventoryNumber-filter-icon" style="cursor: pointer;"></i>
+                            <div id="inventoryNumber-filter-dropdown" class="dropdown-content">
+                                <input type="text" id="inventoryNumber-search" placeholder="Инвентарный номер..">
+                                <ul id="inventoryNumber-list">
+                                    <li data-value=""><a href="#">Любой инвентарный номер</a></li>
+                                    {% for inventory_number in inventory_numbers %}
+                                        <li data-value="{{ inventory_number }}"><a href="#">{{ inventory_number }}</a></li>
+                                    {% endfor %}
+                                    <li data-value=""><a href="#">Все варинаты</a></li>
+                                    <li data-value="True"><a href="#">Да</a></li>
+                                    <li data-value="False"><a href="#">Нет</a></li>
+                                </ul>
+                            </div>
+                        </th>
+                        {% if perms.users.change_task or perms.users.delete_task %}
+                            <th scope="col" style="width: 200px;">Действия</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title|wrap_string }}</td>
+                        <td>                            
+                            <span class="short-message">{{ task.message|wrap_string|truncatechars:100 }}</span>
+                            <span class="full-message d-none">{{ task.message|wrap_string }}</span>
+                            {% if task.message|length > 100 %}
+                                <button type="button" class="btn btn-link p-0 toggle-message" data-bs-toggle="tooltip" title="Раскрыть">Раскрыть</button>
+                            {% endif %}
+                        </td>
+                        <td>{% for user_task in user_tasks %}
+                                {% if user_task.task_id == task.id %} 
+                                    {% if user_task.owner %}
+                                        {{ user_task.user|get_full_name_group_and_wrap }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>{% for user_task in user_tasks %}
+                                {% if user_task.task_id == task.id %} 
+                                    {% if not user_task.owner %}
+                                        {{ user_task.user|get_full_name_group_and_wrap }}<br>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}</td>
+                        {% if task.status.id == 1 %}
+                            <td><span class="badge badge-soft-primary mb-0">{{ task.status.status_name|wrap_string }}</span></td>
+                        {% elif task.status.id == 2 %}
+                            <td><span class="badge badge-soft-success mb-0">{{ task.status.status_name|wrap_string }}</span></td>
+                        {% else %}
+                            <td><span class="badge badge-soft-primary mb-0">{{ task.status.status_name|wrap_string }}</span></td>
+                        {% endif %}
+                        {% if task.computer %}
+                            <td>{{ task.computer.inventory_number|wrap_string }}</td>
+                        {% elif task.monitor %}
+                            <td>{{ task.monitor.inventory_number|wrap_string }}</td>
+                        {% elif task.printer %}
+                            <td>{{ task.printer.inventory_number|wrap_string }}</td>
+                        {% elif task.projector %}
+                            <td>{{ task.projector.inventory_number|wrap_string }}</td>
+                        {% elif task.tv %}
+                            <td>{{ task.tv.inventory_number|wrap_string }}</td>
+                        {% endif %}
+                        {% if perms.users.change_task or perms.users.delete_task %}
+                            <td>
+                                <ul class="list-inline mb-0">
+                                    {% if perms.users.change_task %}
+                                        <li class="list-inline-item">
+                                            <a href="/tasks/{{ task.id }}/edit_task/" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" class="px-2 text-primary"><i class="bx bx-pencil font-size-18"></i></a>
+                                        </li>
+                                    {% endif %}
+                                    {% if perms.users.delete_task %}
+                                        <li class="list-inline-item">
+                                            <a data-id="{{ task.name }}" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" class="px-2 text-danger btn-delete" data-url="/api/task/{{ task.id }}/delete/"><i class="bx bx-trash-alt font-size-18"></i></a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row d-md-none">
+    {% for task in tasks %}
+    <div class="col-12 card">
+        <div class="card-body">
+            <div><h5 class="text-body">{{ task.title }}</h5></div>
+            <p class="card-text"><b>Сообщение:</b> {{ task.message }}</p>
+            <p class="card-text"><b>Постановщик:</b> {% for user_task in user_tasks %}
+                                {% if user_task.task_id == task.id %} 
+                                    {% if user_task.owner %}
+                                        {{ user_task.user|get_full_name_group_and_wrap:True }}
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}</p>
+            <p class="card-text"><b>Ответственные:</b> 
+                            {% for user_task in user_tasks %}
+                                {% if user_task.task_id == task.id %} 
+                                    {% if not user_task.owner %}
+                                        {{ user_task.user|get_full_name_group_and_wrap:True }}<br>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+            </p>
+            {% if perms.users.change_task %}
+                <a href="/tasks/{{ task.id }}/edit_task/" class="btn btn-sm btn-primary">Редактировать</a>
+            {% endif %}
+            {% if perms.users.delete_task %}
+                <a data-id="{{ task.name }}" data-url="/api/task/{{ task.id }}/delete/" class="btn btn-sm btn-danger btn-delete">Удалить</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="modal" tabindex="-1" id="deleteModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="modalBodyContent">Вы действительно хотите удалить?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="confirmDelete">Да</button>
+                <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">Нет</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.toggle-message').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var shortMessage = this.previousElementSibling.previousElementSibling;
+            var fullMessage = this.previousElementSibling;
+            if (fullMessage.classList.contains('d-none')) {
+                fullMessage.classList.remove('d-none');
+                shortMessage.classList.add('d-none');
+                this.textContent = 'Скрыть';
+            } else {
+                fullMessage.classList.add('d-none');
+                shortMessage.classList.remove('d-none');
+                this.textContent = 'Раскрыть';
+            }
+        });
+    });
+});
+</script>
+
+<script src="{% static 'StockTaking/js/delete.js' %}"></script>
+<script src="{% static 'StockTaking/js/list.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+
+
+{% endblock %}
+{% block pagination %}
+{% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for p in paginator.page_range %}
+                {% if page_obj.number == p %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% elif p >= page_obj.number|add:-4 and p <= page_obj.number|add:4 %}
+                    <li class="page-item"><a class="page-link" href="?page={{ p }}&{{ request.GET.urlencode|check_page_param }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}&{{ request.GET.urlencode|check_page_param }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

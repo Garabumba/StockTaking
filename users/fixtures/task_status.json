@@ -1,0 +1,1 @@
+[{"model": "users.taskstatus", "pk": 1, "fields": {"status_name": "В работе"}}, {"model": "users.taskstatus", "pk": 2, "fields": {"status_name": "Завершена"}}]

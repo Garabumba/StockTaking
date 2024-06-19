@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!--<h1>Interactive Notifications</h1>
+    <div id="notifications">
+        {% for notification in notifications %}
+            <div class="notification">{{ notification.message }}</div>
+            <div class="notification">{{ notification.created_at }}</div>
+        {% endfor %}
+    </div>-->
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Левая половина -->
+            <div class="col-md-6">
+                {% for notification in notifications %}
+                    {% if 'INFO' in notification.message %}
+                    <div class="card mb-3">
+                        <div class="card-body d-flex align-items-center">
+                            <img src="/media/notifications/info.png" alt="Иконка 1" class="img-fluid mr-3" style="width: 15%;" />
+                            <div>
+                                <h5 class="card-title">Информация</h5>
+                                <p class="card-text">{{ notification.message }}</p>
+                                <a href="#" class="btn btn-primary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <!-- Правая половина -->
+            <div class="col-md-6">
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/media/notifications/error.png" alt="Иконка 1" class="img-fluid mr-3" style="width: 15%;" />
+                        <div>
+                            <h5 class="card-title">Заголовок карточки 1</h5>
+                            <p class="card-text">Краткое описание карточки 1.</p>
+                            <a href="#" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/media/notifications/error.png" alt="Иконка 1" class="img-fluid mr-3" style="width: 15%;" />
+                        <div>
+                            <h5 class="card-title">Заголовок карточки 1</h5>
+                            <p class="card-text">Краткое описание карточки 1.</p>
+                            <a href="#" class="btn btn-primary">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            function loadNotifications() {
+                $.ajax({
+                    url: '/notifications/get-notifications/',
+                    success: function(data) {
+                        $('#notifications').html(data);
+                    }
+                });
+            }
+
+            //setInterval(loadNotifications, 5000); // Обновление каждые 5 секунд
+        });
+    </script>
+{% endblock %}
+</html>

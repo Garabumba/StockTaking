@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block content %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.0/css/boxicons.min.css" integrity="sha512-pVCM5+SN2+qwj36KonHToF2p1oIvoU3bsqxphdOIWMYmgr4ZqD3t5DjKvvetKhXGc/ZG5REYTT6ltKfExEei/Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/5.3.45/css/materialdesignicons.css" integrity="sha256-NAxhqDvtY0l4xn+YVa6WjAcmd94NNfttjNsDmNatFVc=" crossorigin="anonymous" />
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+	<link type="text/css" href="{% static 'StockTaking/css/list.css' %}" rel="stylesheet" />
+
+	<style type="text/css">
+	    @media (max-width: 767.98px) {
+	        .project-list-table {
+	            display: none;
+	        }
+
+	        .d-md-block {
+	            display: none !important;
+	        }
+	        .d-md-none {
+	            display: block !important;
+	        }
+	    }
+
+	    @media (min-width: 768px) {
+	        .user-card {
+	            display: none;
+	        }
+
+	        .d-md-block {
+	            display: block !important;
+	        }
+	        .d-md-none {
+	            display: none !important;
+	        }
+	    }
+	</style>
+
+    <div class="container my-5">
+        {% if exists %}
+            <div class="text-center mb-4">
+                <b><a target="_blank" href="{{university.url}}" class="text-decoration-none text-dark fs-4">{{university.name}}</a></b>
+            </div>
+
+            <div class="row align-items-center">
+			    <div class="col-md-6">
+			        <div class="mb-3">
+			            <h5 class="card-title">Корпуса</h5>
+			        </div>
+			    </div>
+			    {% if perms.home.add_universitybody %}
+				    <div class="col-md-6">
+				        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				            <div>
+				                <a href="/university_body/add_university_body/" class="btn btn-primary">Создать</a>
+				            </div>
+				        </div>
+				    </div>
+				{% endif %}
+			</div>
+
+			{% if university_bodies|length > 0 %}
+	            <div class="row">
+				    <div class="col-lg-12">
+				        <div class="table-responsive">
+				            <table class="table project-list-table table-nowrap align-middle table-borderless">
+				                <thead>
+				                    <tr>
+				                        <th scope="col">Название</th>
+				                        <th>Адрес</th>
+				                    </tr>
+				                </thead>
+				                <tbody>
+				                    {% for university_body in university_bodies %}
+				                        <td>{{ university_body.name|wrap_string }}</td>
+				                        <td>{{ university_body.address|wrap_string }}</td>
+				                    {% endfor %}
+				                </tbody>
+				            </table>
+				        </div>
+				        <div class="row d-md-none">
+						    {% for university_body in university_bodies %}
+						        <div class="col-12 card">
+						            <div class="card-body">
+						                <div><h5 class="text-body">{{ university_body.name }}</h5></div>
+						                <p class="card-text"><b>Адрес:</b> {{ university_body.address }}</p>
+						            </div>
+						        </div>
+						    {% endfor %}
+						</div>
+				    </div>
+				</div>
+			{% endif %}
+
+			<div class="row align-items-center">
+			    <div class="col-md-6">
+			        <div class="mb-3">
+			            <h5 class="card-title">Аудитории</h5>
+			        </div>
+			    </div>
+			    {% if perms.home.add_universitybody %}
+				    <div class="col-md-6">
+				        <div class="d-flex flex-wrap align-items-center justify-content-end gap-2 mb-3">
+				            <div>
+				                <a href="/audiences/add_audience/" class="btn btn-primary">Создать</a>
+				            </div>
+				        </div>
+				    </div>
+				{% endif %}
+			</div>
+
+            <div>
+                {% for university_body in university_bodies %}
+                    <div class="accordion" id="{{ university_body.name }}">
+                        <div class="accordion-item border rounded mb-2">
+                            <h2 class="accordion-header" id="{{ university_body.name }}-heading">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-{{ university_body.name }}" aria-expanded="false" aria-controls="flush-{{ university_body.name }}">
+                                    Корпус {{ university_body.name }}
+                                </button>
+                            </h2>
+                            <div id="flush-{{ university_body.name }}" class="accordion-collapse collapse" aria-labelledby="{{ university_body.name }}-heading" data-bs-parent="#{{ university_body.name }}">
+                                <div class="accordion-body bg-light">
+                                	<div class="row">
+									    <div class="col-lg-12">
+									        <div class="table-responsive">
+									            <table class="table project-list-table table-nowrap align-middle table-borderless">
+									                
+									                <tbody>
+									                	{% for audience in university_body.audiences %}
+										                    <tr>
+										                    	<td><a href="audience/{{audience.id}}/" style="text-decoration: none; color: #000;">{{ audience.name|wrap_string }}</a></td>
+										                   	</tr>
+										                {% endfor %}
+									                </tbody>
+									            </table>
+									        </div>
+									        <div class="row d-md-none">
+											    {% for audience in university_body.audiences %}
+											        <div class="col-12 card">
+											            <div class="card-body">
+											                <div><a href="audience/{{audience.id}}/" style="text-decoration: none; color: #000;">{{ audience.name }}</a></div>
+											            </div>
+											        </div>
+											    {% endfor %}
+											</div>
+									    </div>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <a href="/university/add_university/" class="btn btn-primary">Создать университет</a>
+            </div>
+        {% endif %}
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+<script src="{% static 'StockTaking/js/delete.js' %}"></script>
+<script src="{% static 'StockTaking/js/list.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,1 @@
+[{"model": "home.projectortype", "pk": 1, "fields": {"name": "Диодный"}}, {"model": "home.projectortype", "pk": 2, "fields": {"name": "LED"}}]

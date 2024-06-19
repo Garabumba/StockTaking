@@ -1,0 +1,297 @@
+body {
+    background-color: #eff2f5;
+}
+
+.select2 {
+    width: 100% !important;
+}
+
+.project-list-table {
+    border-collapse: separate;
+    border-spacing: 0 12px;
+}
+
+.project-list-table tr {
+    background-color: #fff;
+}
+
+.table-nowrap td, .table-nowrap th {
+    white-space: nowrap;
+}
+
+.table-borderless>:not(caption)>*>* {
+    border-bottom-width: 0;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0.75rem 0.75rem;
+    background-color: var(--bs-table-bg);
+    border-bottom-width: 1px;
+    box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg);
+}
+
+.avatar-sm {
+    height: 2rem;
+    width: 2rem;
+}
+
+.rounded-circle {
+    border-radius: 50%!important;
+}
+
+.me-2 {
+    margin-right: 0.5rem!important;
+}
+
+img, svg {
+    vertical-align: middle;
+}
+
+a {
+    color: #3b76e1;
+    text-decoration: none;
+}
+
+.badge-soft-danger {
+    color: #f56e6e !important;
+    background-color: rgba(245,110,110,.1);
+}
+
+.badge-soft-success {
+    color: #63ad6f !important;
+    background-color: rgba(99,173,111,.1);
+}
+
+.badge-soft-primary {
+    color: #3b76e1 !important;
+    background-color: rgba(59,118,225,.1);
+}
+
+.badge-soft-info {
+    color: #57c9eb !important;
+    background-color: rgba(87,201,235,.1);
+}
+
+.avatar-title {
+    align-items: center;
+    background-color: #3b76e1;
+    color: #fff;
+    display: flex;
+    font-weight: 500;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
+}
+
+.bg-soft-primary {
+    background-color: rgba(59,118,225,.25)!important;
+}
+
+.accordion {
+    margin-top: 20px; /* Adjust as needed */
+    margin-bottom: 20px;
+}
+.col-12.card {
+    margin-bottom: 20px; /* Adjust as needed */
+}
+
+#vendor-filter-dropdown, 
+#model-filter-dropdown, 
+#canInstalling-filter-dropdown, 
+#isUpdating-filter-dropdown, 
+#threads-filter-dropdown, 
+#cores-filter-dropdown, 
+#frequency-filter-dropdown, 
+#type-filter-dropdown, 
+#serialNumber-filter-dropdown, 
+#memory-filter-dropdown, 
+#inventoryNumber-filter-dropdown, 
+#resolution-filter-dropdown, 
+#resolutionFormat-filter-dropdown, 
+#maxComputers-filter-dropdown, 
+#maxPlaces-filter-dropdown, 
+#universityBody-filter-dropdown, 
+#colorPrinting-filter-dropdown, 
+#printType-filter-dropdown, 
+#status-filter-dropdown, 
+#isNetworking-filter-dropdown, 
+#yearOfProduction-filter-dropdown, 
+#withRemoteController-filter-dropdown, 
+#audience-filter-dropdown, 
+#diagonal-filter-dropdown, 
+#ip-filter-dropdown, 
+#arch-filter-dropdown, 
+#name-filter-dropdown, 
+#aspectRatio-filter-dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+#vendor-filter-dropdown input, 
+#model-filter-dropdown input, 
+#canInstalling-filter-dropdown input, 
+#isUpdating-filter-dropdown input, 
+#threads-filter-dropdown input, 
+#cores-filter-dropdown input, 
+#frequency-filter-dropdown input, 
+#type-filter-dropdown input, 
+#serialNumber-filter-dropdown input, 
+#memory-filter-dropdown input, 
+#inventoryNumber-filter-dropdown input, 
+#resolution-filter-dropdown input, 
+#resolutionFormat-filter-dropdown input, 
+#maxComputers-filter-dropdown input, 
+#maxPlaces-filter-dropdown input, 
+#universityBody-filter-dropdown input, 
+#colorPrinting-filter-dropdown input, 
+#printType-filter-dropdown input, 
+#status-filter-dropdown input, 
+#isNetworking-filter-dropdown input, 
+#yearOfProduction-filter-dropdown input, 
+#audience-filter-dropdown input, 
+#withRemoteController-filter-dropdown input, 
+#diagonal-filter-dropdown input, 
+#ip-filter-dropdown input, 
+#arch-filter-dropdown input, 
+#name-filter-dropdown input, 
+#aspectRatio-filter-dropdown input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+#vendor-filter-dropdown ul, 
+#model-filter-dropdown ul, 
+#canInstalling-filter-dropdown ul, 
+#isUpdating-filter-dropdown ul, 
+#threads-filter-dropdown ul, 
+#cores-filter-dropdown ul, 
+#frequency-filter-dropdown ul, 
+#type-filter-dropdown ul, 
+#serialNumber-filter-dropdown ul, 
+#memory-filter-dropdown ul, 
+#inventoryNumber-filter-dropdown ul, 
+#resolution-filter-dropdown ul, 
+#resolutionFormat-filter-dropdown ul, 
+#maxComputers-filter-dropdown ul, 
+#maxPlaces-filter-dropdown ul, 
+#universityBody-filter-dropdown ul, 
+#colorPrinting-filter-dropdown ul, 
+#printType-filter-dropdown ul, 
+#status-filter-dropdown ul, 
+#isNetworking-filter-dropdown ul, 
+#yearOfProduction-filter-dropdown ul, 
+#withRemoteController-filter-dropdown ul, 
+#audience-filter-dropdown ul, 
+#diagonal-filter-dropdown ul, 
+#ip-filter-dropdown ul, 
+#arch-filter-dropdown ul, 
+#name-filter-dropdown ul, 
+#aspectRatio-filter-dropdown ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#vendor-filter-dropdown ul li a, 
+#model-filter-dropdown ul li a, 
+#canInstalling-filter-dropdown ul li a, 
+#isUpdating-filter-dropdown ul li a, 
+#threads-filter-dropdown ul li a, 
+#cores-filter-dropdown ul li a, 
+#frequency-filter-dropdown ul li a, 
+#type-filter-dropdown ul li a, 
+#serialNumber-filter-dropdown ul li a, 
+#memory-filter-dropdown ul li a, 
+#inventoryNumber-filter-dropdown ul li a, 
+#resolution-filter-dropdown ul li a, 
+#resolutionFormat-filter-dropdown ul li a, 
+#maxComputers-filter-dropdown ul li a, 
+#maxPlaces-filter-dropdown ul li a, 
+#universityBody-filter-dropdown ul li a, 
+#colorPrinting-filter-dropdown ul li a, 
+#printType-filter-dropdown ul li a, 
+#status-filter-dropdown ul li a, 
+#isNetworking-filter-dropdown ul li a, 
+#yearOfProduction-filter-dropdown ul li a, 
+#audience-filter-dropdown ul li a, 
+#withRemoteController-filter-dropdown ul li a, 
+#diagonal-filter-dropdown ul li a, 
+#ip-filter-dropdown ul li a, 
+#arch-filter-dropdown ul li a, 
+#name-filter-dropdown ul li a, 
+#aspectRatio-filter-dropdown ul li a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+#vendor-filter-dropdown ul li a:hover, 
+#model-filter-dropdown ul li a:hover, 
+#canInstalling-filter-dropdown ul li a:hover, 
+#isUpdating-filter-dropdown ul li a:hover, 
+#threads-filter-dropdown ul li a:hover, 
+#cores-filter-dropdown ul li a:hover, 
+#frequency-filter-dropdown ul li a:hover, 
+#type-filter-dropdown ul li a:hover, 
+#serialNumber-filter-dropdown ul li a:hover, 
+#memory-filter-dropdown ul li a:hover, 
+#inventoryNumber-filter-dropdown ul li a:hover, 
+#resolution-filter-dropdown ul li a:hover, 
+#resolutionFormat-filter-dropdown ul li a:hover, 
+#maxComputers-filter-dropdown ul li a:hover, 
+#maxPlaces-filter-dropdown ul li a:hover, 
+#universityBody-filter-dropdown ul li a:hover, 
+#colorPrinting-filter-dropdown ul li a:hover, 
+#printType-filter-dropdown ul li a:hover, 
+#status-filter-dropdown ul li a:hover, 
+#isNetworking-filter-dropdown ul li a:hover, 
+#yearOfProduction-filter-dropdown ul li a:hover, 
+#audience-filter-dropdown ul li a:hover, 
+#withRemoteController-filter-dropdown ul li a:hover, 
+#diagonal-filter-dropdown ul li a:hover, 
+#ip-filter-dropdown ul li a:hover, 
+#arch-filter-dropdown ul li a:hover, 
+#name-filter-dropdown ul li a:hover, 
+#aspectRatio-filter-dropdown ul li a:hover {
+    background-color: #ddd;
+}
+
+#vendor-list > li > a, 
+#model-list > li > a, 
+#canInstalling-list > li > a, 
+#isUpdating-list > li > a, 
+#threads-list > li > a, 
+#cores-list > li > a, 
+#frequency-list > li > a, 
+#type-list > li > a, 
+#serialNumber-list > li > a, 
+#memory-list > li > a, 
+#inventoryNumber-list > li > a, 
+#resolution-list > li > a, 
+#resolutionFormat-list > li > a, 
+#maxComputers-list > li > a, 
+#maxPlaces-list > li > a, 
+#universityBody-list > li > a, 
+#colorPrinting-list > li > a, 
+#printType-list > li > a, 
+#status-list > li > a, 
+#isNetworking-list > li > a, 
+#yearOfProduction-list > li > a, 
+#withRemoteController-list > li > a, 
+#audience-list > li > a, 
+#diagonal-list > li > a, 
+#ip-list > li > a, 
+#arch-list > li > a, 
+#name-list > li > a, 
+#aspectRatio-list > li > a {
+    font-size: 14px;
+}
+

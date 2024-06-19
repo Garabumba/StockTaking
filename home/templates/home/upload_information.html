@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+    .card {
+            margin: 20px;
+    }
+    .drop-zone {
+        border: 2px dashed #007bff;
+        border-radius: 5px;
+        padding: 20px;
+        text-align: center;
+        color: #007bff;
+        cursor: pointer;
+    }
+    .drop-zone.dragover {
+        background-color: #e9ecef;
+    }
+    @media (max-width: 767.98px) {
+        .drop-zone {
+            display: none;
+        }
+        .file-input-label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            color: #007bff;
+            text-decoration: underline;
+        }
+    }
+    .status-icon {
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    .status-icon.success {
+        color: green;
+    }
+    .status-icon.warning {
+        color: orange;
+    }
+    .status-icon.error {
+        color: red;
+    }
+</style>
+
+
+<div class="container">
+    <h1 class="text-center my-4">Загрузка данных в базу</h1>
+    <div class="row">
+        <!-- Карточка для Пользователей -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Производители</h5>
+                    <div class="drop-zone" id="drop-zone-vendors">
+                        Перетащите файл сюда
+                    </div>
+                    <label for="file-input-vendors" class="file-input-label d-md-none">Выберите файл</label>
+                    <input type="file" class="d-none" id="file-input-vendors">
+                    <button class="btn btn-primary btn-block mt-3" id="upload-btn-vendors">Отправить</button>
+                    <a href="/api/download_vendors_template/" class="btn btn-secondary btn-block mt-3">Скачать шаблон</a>
+                    <div id="message-vendors" class="mt-2">
+                        <!--<button class="btn btn-warning btn-block">aaa</button>-->
+                    </div>
+                    <div id="message-vendors" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Карточка для Прав -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Пользователи</h5>
+                    <div class="drop-zone" id="drop-zone-users">
+                        Перетащите файл сюда
+                    </div>
+                    <label for="file-input-users" class="file-input-label d-md-none">Выберите файл</label>
+                    <input type="file" class="d-none" id="file-input-users">
+                    <button class="btn btn-primary btn-block mt-3" id="upload-btn-users">Отправить</button>
+                    <a href="/api/download_users_template/" class="btn btn-secondary btn-block mt-3">Скачать шаблон</a>
+                    <div id="message-users" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+        <!-- Карточка для Компьютеров -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Привязать технику</h5>
+                    <div class="drop-zone" id="drop-zone-attachTechnique">
+                        Перетащите файл сюда
+                    </div>
+                    <label for="file-input-attachTechnique" class="file-input-label d-md-none">Выберите файл</label>
+                    <input type="file" class="d-none" id="file-input-attachTechnique">
+                    <button class="btn btn-primary btn-block mt-3" id="upload-btn-attachTechnique">Отправить</button>
+                    <a href="/api/download_users_technique_template/" class="btn btn-secondary btn-block mt-3">Скачать шаблон</a>
+                    <div id="message-attachTechnique" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Загрузить аудитории</h5>
+                    <div class="drop-zone" id="drop-zone-audiences">
+                        Перетащите файл сюда
+                    </div>
+                    <label for="file-input-audiences" class="file-input-label d-md-none">Выберите файл</label>
+                    <input type="file" class="d-none" id="file-input-audiences">
+                    <button class="btn btn-primary btn-block mt-3" id="upload-btn-audiences">Отправить</button>
+                    <a href="/api/download_audiences_template/" class="btn btn-secondary btn-block mt-3">Скачать шаблон</a>
+                    <div id="message-audiences" class="mt-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-success btn-block mt-4" id="upload-all-btn">Отправить всё</button>
+</div>
+
+<!--<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="errorModalLabel">Ошибки</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="error-modal-body">
+                 Содержимое ошибок будет вставлено динамически 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
+<!-- Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="errorModalLabel">Ошибки</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="error-modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'StockTaking/js/upload_information.js' %}"></script>
+
+{% endblock %}
